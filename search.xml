@@ -3,7 +3,11 @@
   <entry>
     <title>Linux基础命令</title>
     <url>/2020/05/16/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h1 id="目录操作命令"><a href="#目录操作命令" class="headerlink" title="目录操作命令"></a>目录操作命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">用途：</span><br><span class="line">    用来对文件进行操作</span><br><span class="line">    </span><br><span class="line">英文原意：list</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#ls [选项][文件名或目录名]</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">    -a:显示所有文件</span><br><span class="line">    -A:列出除.及..的其他文件</span><br><span class="line">    -d：显示目录信息，而不是目录下的文件&#x2F;&#x2F;ls -ld [目录] 显示目录本身详细信息</span><br><span class="line">    -l:长格式显示                        &#x2F;&#x2F;ls -l [目录]显示目录下的内容</span><br><span class="line">    &#x2F;&#x2F;ls -l+(h&#x3D;按照习惯单位显示文件大小(k))</span><br><span class="line">    -t:以文件的大小排序</span><br><span class="line">    -S:以文件的大小排序</span><br><span class="line">    -i:显示文件的i节点号</span><br><span class="line">    -h:以易读的方式显示</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<p><img src="%5Cimages%5Clinux.png" alt="upload successful"></p>
+<a id="more"></a>
+
+
+<h1 id="目录操作命令"><a href="#目录操作命令" class="headerlink" title="目录操作命令"></a>目录操作命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">用途：</span><br><span class="line">    用来对文件进行操作</span><br><span class="line">    </span><br><span class="line">英文原意：list</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#ls [选项][文件名或目录名]</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">    -a:显示所有文件</span><br><span class="line">    -A:列出除.及..的其他文件</span><br><span class="line">    -d：显示目录信息，而不是目录下的文件&#x2F;&#x2F;ls -ld [目录] 显示目录本身详细信息</span><br><span class="line">    -l:长格式显示                        &#x2F;&#x2F;ls -l [目录]显示目录下的内容</span><br><span class="line">    &#x2F;&#x2F;ls -l+(h&#x3D;按照习惯单位显示文件大小(k))</span><br><span class="line">    -t:以文件的大小排序</span><br><span class="line">    -S:以文件的大小排序</span><br><span class="line">    -i:显示文件的i节点号</span><br><span class="line">    -h:以易读的方式显示</span><br></pre></td></tr></table></figure>
 
 
 
