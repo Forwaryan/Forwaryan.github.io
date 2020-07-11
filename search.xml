@@ -1,126 +1,1081 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>计算机网络(第七版)谢希仁-第3章 数据链路层</title>
-      <link href="/2020/07/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC3%E7%AB%A0-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/"/>
-      <url>/2020/07/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC3%E7%AB%A0-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</url>
-      
-        <content type="html"><![CDATA[<h1 id="第-3-章-数据链路层"><a href="#第-3-章-数据链路层" class="headerlink" title="第 3 章  数据链路层"></a>第 3 章  数据链路层</h1><h2 id="使用点对点信道的数据链路层"><a href="#使用点对点信道的数据链路层" class="headerlink" title="使用点对点信道的数据链路层"></a>使用点对点信道的数据链路层</h2><h3 id="数据链路和帧"><a href="#数据链路和帧" class="headerlink" title="数据链路和帧"></a>数据链路和帧</h3><ul><li><p>数据链路层使用的信道主要有以下两种类型：</p><ul><li>点对点信道。这种信道使用一对一的点对点通信方式。</li><li>广播信道。这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上连接的主机很多，因此必须使用专用的共享信道协议来协调这些主机的数据发 </li></ul></li><li><p>链路(link)是一条无源的点到点的物理线路段，中间没有任何其他的交换结点。</p></li><li><p>数据链路(data link) 除了物理线路外，还必须有通信协议来控制这些数据的传输。若把实现这些协议的硬件和软件加到链路上，就构成了数据链路。</p></li><li><p>数据链路层传送的是帧</p><a id="more"></a><h3 id="三个基本问题"><a href="#三个基本问题" class="headerlink" title="三个基本问题"></a>三个基本问题</h3></li><li><p>(1) 封装成帧</p><ul><li>将网络层传下来的分组添加首部和尾部，用于标记帧的开始和结束。</li></ul></li><li><p>(2) 透明传输</p><ul><li>透明表示一个实际存在的事物看起来好像不存在一样。</li><li>帧使用首部和尾部进行定界，如果帧的数据部分含有和首部尾部相同的内容，那么帧的开始和结束位置就会被错误的判定。需要在数据部分出现首部尾部相同的内容前面插入转义字符。如果数据部分出现转义字符，那么就在转义字符前面再加个转义字符。在接收端进行处理之后可以还原出原始数据。这个过程透明传输的内容是转义字符，用户察觉不到转义字符的存在。</li></ul></li><li><p>(3) 差错控制 </p><ul><li><p>循环冗余检验 CRC<br>目前数据链路层广泛使用了循环冗余检验（CRC）来检查比特差错。</p></li><li><p>帧检验序列 FCS<br>在数据后面添加上的冗余码称为帧检验序列 FCS (Frame Check Sequence)。</p></li><li><p>冗余码的计算</p><ul><li>例子：<br>现在 k = 6, M = 101001。<br>设 n = 3, 除数 P = 1101，<br>被除数是 2^nM = 101001000。<br>模 2 运算的结果是：商 Q = 110101，<br> 余数 R = 001。<br>把余数 R 作为冗余码添加在数据 M 的后面发送出去。发送的数据是：2^nM + R<br>即：101001001，共 (k + n) 位。 </li></ul></li><li><p>概要: CRC 是一种常用的检错方法，而 FCS 是添加在数据后面的冗余码。<br>FCS 可以用 CRC 这种方法得出，但 CRC 并非用来获得 FCS 的唯一方法。</p><h2 id="点对点协议-PPP"><a href="#点对点协议-PPP" class="headerlink" title="点对点协议 PPP"></a>点对点协议 PPP</h2><h3 id="PPP-协议的特点"><a href="#PPP-协议的特点" class="headerlink" title="PPP 协议的特点"></a>PPP 协议的特点</h3></li></ul></li><li><p>互联网用户通常需要连接到某个 ISP 之后才能接入到互联网，PPP 协议是用户计算机和 ISP 进行通信时所使用的数据链路层协议。</p><h3 id="PPP-协议的帧格式"><a href="#PPP-协议的帧格式" class="headerlink" title="PPP 协议的帧格式"></a>PPP 协议的帧格式</h3></li><li><p>示意图：<br>F 字段为帧的定界符<br>A 和 C 字段暂时没有意义<br>FCS 字段是使用 CRC 的检验序列<br>信息部分的长度不超过 1500</p><h3 id="PPP-协议的工作状态"><a href="#PPP-协议的工作状态" class="headerlink" title="PPP 协议的工作状态"></a>PPP 协议的工作状态</h3></li><li><p>过程：<br>当用户拨号接入 ISP 时，路由器的调制解调器对拨号做出确认，并建立一条物理连接。<br>PC 机向路由器发送一系列的 LCP 分组（封装成多个 PPP 帧）。<br>这些分组及其响应选择一些 PPP 参数，和进行网络层配置，NCP 给新接入的 PC机分配一个临时的 IP 地址，使 PC 机成为因特网上的一个主机。<br>通信完毕时，NCP 释放网络层连接，收回原来分配出去的 IP 地址。接着，LCP 释放数据链路层连接。最后释放的是物理层的连接。</p><h2 id="使用广播信道的数据链路层"><a href="#使用广播信道的数据链路层" class="headerlink" title="使用广播信道的数据链路层"></a>使用广播信道的数据链路层</h2><h3 id="局域网的数据链路层"><a href="#局域网的数据链路层" class="headerlink" title="局域网的数据链路层"></a>局域网的数据链路层</h3></li><li><p>局域网是一种典型的广播信道，主要特点是网络为一个单位所拥有，且地理范围和站点数目均有限。</p></li><li><p>主要有以太网、令牌环网、FDDI 和 ATM 等局域网技术，目前以太网占领着有线局域网市场。</p></li><li><p>可以按照网络拓扑结构对局域网进行分类：</p><ul><li>星形网</li><li>环形网</li><li>总线网</li><li>树形网 </li></ul></li><li><p>数据链路层的两个子层 </p><ul><li>逻辑链路控制 LLC (Logical Link Control)子层</li><li>媒体接入控制 MAC (Medium Access Control)子层。</li><li>概要: 与接入到传输媒体有关的内容都放在 MAC子层，而 LLC 子层则与传输媒体无关，不管采用何种协议的局域网对 LLC 子层来说都是透明的<br>所以以后一般不考虑 LLC 子层 </li></ul></li><li><p>适配器</p><ul><li>网络接口板又称为通信适配器(adapter)或网络接口卡 NIC (Network Interface Card)，或“网卡”。<ul><li>适配器的重要功能：<ul><li>进行串行/并行转换。</li><li>对数据进行缓存。</li><li>在计算机的操作系统安装设备驱动程序。</li><li>实现以太网协议。 <h3 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h3></li></ul></li></ul></li></ul></li><li><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p><ul><li>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。</li><li>载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。</li><li>碰撞检测 ：边发送边监听 ，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。</li></ul></li><li><p>具体内容</p><ul><li>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</li><li>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</li><li>概要: 示意图<br>P85<h2 id="使用广播信道的以太网"><a href="#使用广播信道的以太网" class="headerlink" title="使用广播信道的以太网"></a>使用广播信道的以太网</h2><h3 id="使用集线器的星形拓扑"><a href="#使用集线器的星形拓扑" class="headerlink" title="使用集线器的星形拓扑"></a>使用集线器的星形拓扑</h3></li></ul></li><li><p>传统以太网最初是使用粗同轴电缆，后来演进到使用比较便宜的细同轴电缆，最后发展为使用更便宜和更灵活的双绞线。<br>这种以太网采用星形拓扑，在星形的中心则增加了一种可靠性非常高的设备，叫做集线器(hub)  </p><h3 id="以太网的信道利用率"><a href="#以太网的信道利用率" class="headerlink" title="以太网的信道利用率"></a>以太网的信道利用率</h3></li><li><p>一个帧从开始发送，经可能发生的碰撞后，将再重传数次，到发送成功且信道转为空闲(即再经过时间 τ  使得信道上无信号在传播)时为止，是发送一帧所需的平均时间。 </p></li><li><p>发送一帧占用线路的时间是 T0 +  τ ，而帧本身的发送时间是 T0。于是我们可计算出理想情况下的极限信道利用率 Smax为： </p><h3 id="以太网的-MAC-层"><a href="#以太网的-MAC-层" class="headerlink" title="以太网的 MAC 层"></a>以太网的 MAC 层</h3></li><li><p>MAC 地址是链路层地址，长度为 6 字节（48 位），用于唯一标识网络适配器（网卡）。</p></li><li><p>一台主机拥有多少个网络适配器就有多少个 MAC 地址。例如笔记本电脑普遍存在无线网络适配器和有线网络适配器，因此就有两个 MAC 地址。</p><h3 id="以太网帧格式："><a href="#以太网帧格式：" class="headerlink" title="以太网帧格式："></a>以太网帧格式：</h3></li><li><p>类型 ：标记上层使用的协议；<br>数据 ：长度在 46-1500 之间，如果太小则需要填充；<br>FCS ：帧检验序列，使用的是 CRC 检验方法；</p></li><li><p>出现什么情况是无效的MAC帧</p><h2 id="扩展的以太网"><a href="#扩展的以太网" class="headerlink" title="扩展的以太网"></a>扩展的以太网</h2><h3 id="在物理层扩展以太网"><a href="#在物理层扩展以太网" class="headerlink" title="在物理层扩展以太网"></a>在物理层扩展以太网</h3></li><li><p>用多个集线器可连成更大的局域网</p><ul><li>用集线器组成更大的局域网都在一个碰撞域中<ul><li>优点<ul><li>使原来属于不同碰撞域的局域网上的计算机能够进行跨碰撞域的通信。</li><li>扩大了局域网覆盖的地理范围。</li></ul></li><li>缺点<ul><li>碰撞域增大了，但总的吞吐量并未提高。</li><li>如果不同的碰撞域使用不同的数据率，那么就不能用集线器将它们互连起来。<h3 id="在数据链路层扩展以太网"><a href="#在数据链路层扩展以太网" class="headerlink" title="在数据链路层扩展以太网"></a>在数据链路层扩展以太网</h3></li></ul></li></ul></li></ul></li><li><p>在数据链路层扩展局域网是使用网桥。</p><ul><li>网桥工作在数据链路层，它根据 MAC 帧的目的地址对收到的帧进行转发。<br>网桥具有过滤帧的功能。当网桥收到一个帧时，并不是向所有的接口转发此帧，而是先检查此帧的目的 MAC 地址，然后再确定将该帧转发到哪一个接口 。<ul><li>优点<ul><li>过滤通信量。 </li><li>扩大了物理范围。</li><li>提高了可靠性。</li><li>可互连不同物理层、不同 MAC 子层和不同速率（如10 Mb/s 和 100 Mb/s 以太网）的局域网。</li></ul></li><li>缺点<ul><li>存储转发增加了时延。 </li><li>在MAC 子层并没有流量控制功能。 </li><li>具有不同 MAC 子层的网段桥接在一起时时延更大。</li><li>网桥只适合于用户数不太多(不超过几百个)和通信量不太大的局域网，否则有时还会因传播过多的广播信息而产生网络拥塞。这就是所谓的广播风暴。  </li></ul></li></ul></li><li>交换机<ul><li>交换机具有自学习能力，学习的是交换表的内容，交换表中存储着 MAC 地址到接口的映射。<br>正是由于这种自学习能力，因此交换机是一种即插即用设备，不需要网络管理员手动配置交换表内容。</li><li>但有时为了增加网络的可靠性，在使用以太网交换机组网时，往往会增加一些冗余的链路。在这些情况下，自学习的过程就可能导致以太网帧在网络的某个环路中无限制地兜圈，为了解决兜圈子问题，IEEE 的 802.ID 标准制定了一个生成树协议。<ul><li>不改变网络的实际拓扑，但在逻辑上则切断某些链路，使得从一台主机到所有其他主机的路径是无环路的树状结构，从而消除了兜圈子现象。<h3 id="虚拟局域网"><a href="#虚拟局域网" class="headerlink" title="虚拟局域网"></a>虚拟局域网</h3></li></ul></li></ul></li></ul></li><li><p>虚拟局域网可以建立与物理位置无关的逻辑组，只有在同一个虚拟局域网中的成员才会收到链路层广播信息。</p></li><li><p>例如下图中 (A1, A2, A3, A4) 属于一个虚拟局域网，A1 发送的广播会被 A2、A3、A4 收到，而其它站点收不到。<br>  P101</p></li><li><p>使用 VLAN 干线连接来建立虚拟局域网，每台交换机上的一个特殊接口被设置为干线接口，以互连 VLAN 交换机。IEEE 定义了一种扩展的以太网帧格式 802.1Q，它在标准以太网帧上加进了 4 字节首部 VLAN 标签，用于表示该帧属于哪一个虚拟局域网。</p><h2 id="高速以太网"><a href="#高速以太网" class="headerlink" title="高速以太网"></a>高速以太网</h2><h3 id="100BASE-T-以太网"><a href="#100BASE-T-以太网" class="headerlink" title="100BASE-T 以太网"></a>100BASE-T 以太网</h3></li><li><p>速率达到或超过 100 Mb/s 的以太网称为高速以太网</p></li><li><p>可在全双工方式下工作而无冲突发生。因此，不使用 CSMA/CD 协议。</p><h3 id="吉比特以太网"><a href="#吉比特以太网" class="headerlink" title="吉比特以太网"></a>吉比特以太网</h3></li><li><p>允许在 1 Gb/s 下全双工和半双工两种方式工作。</p></li><li><p>在半双工方式下使用 CSMA/CD 协议（全双工方式不需要使用 CSMA/CD 协议）。</p><h3 id="10-吉比特以太网"><a href="#10-吉比特以太网" class="headerlink" title="10 吉比特以太网"></a>10 吉比特以太网</h3></li><li><p>10 吉比特以太网只工作在全双工方式</p></li><li><p>也不使用 CSMA/CD 协议。</p><h3 id="使用高速以太网进行宽带接入"><a href="#使用高速以太网进行宽带接入" class="headerlink" title="使用高速以太网进行宽带接入"></a>使用高速以太网进行宽带接入</h3></li><li><p>以太网接入的重要特点是它可提供双向的宽带通信，并且可根据用户对带宽的需求灵活地进行带宽升级。</p></li><li><p>采用以太网接入可实现端到端的以太网传输，中间不需要再进行帧格式的转换。这就提高了数据的传输效率和降低了传输的成本。  </p></li></ul>]]></content>
-      
-      
+<search>
+  <entry>
+    <title>测试</title>
+    <url>/2020/05/15/%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="我的第一个标签"><a href="#我的第一个标签" class="headerlink" title="我的第一个标签"></a>我的第一个标签</h1><h2 id="曾经的是这样的"><a href="#曾经的是这样的" class="headerlink" title="曾经的是这样的"></a>曾经的是这样的</h2><p>###也许是这样的<br>asdafasfasfasdfa新政策是徐水电费水电费水电费阿斯蒂芬达到</p>
+<a id="more"></a>
+
+
+<h1 id="我的第二个标签"><a href="#我的第二个标签" class="headerlink" title="我的第二个标签"></a>我的第二个标签</h1><h2 id="现在是这样的"><a href="#现在是这样的" class="headerlink" title="现在是这样的"></a>现在是这样的</h2><h3 id="也许是这样的"><a href="#也许是这样的" class="headerlink" title="也许是这样的"></a>也许是这样的</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DOF 0x7f7f7f7f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> endl <span class="meta-string">'\n'</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mem(a,b) memset(a,b,sizeof(a))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> debug(case,x); cout&lt;&lt;case&lt;&lt;<span class="meta-string">"  : "</span>&lt;&lt;x&lt;&lt;endl;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IO ios::sync_with_stdio(false);cin.tie(0);cout.tie(0)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">2e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> a[maxn];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    ll len,l,r;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> node&amp; a)<span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(a.len==len) <span class="keyword">return</span> a.l&lt;l;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> a.len&gt;len;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">priority_queue&lt;node&gt;qt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//    priority_queue&lt;node&gt;qt;</span></span><br><span class="line">    ll n;<span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    qt.push(&#123;n,<span class="number">1</span>,n&#125;);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">        node tmp=qt.top();qt.pop();</span><br><span class="line">        ll mid=(tmp.l+tmp.r)/<span class="number">2</span>;</span><br><span class="line">        a[mid]=i;</span><br><span class="line">        ll len=tmp.len,l=tmp.l,r=tmp.r;</span><br><span class="line">        <span class="keyword">if</span>(len&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span>,l,mid<span class="number">-1</span>&#125;);</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span>,mid+<span class="number">1</span>,r&#125;);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span><span class="number">-1</span>,l,mid<span class="number">-1</span>&#125;);</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span>,mid+<span class="number">1</span>,r&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;a[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//    freopen("ii.txt","r",stdin);</span></span><br><span class="line">    <span class="comment">//   freopen("oo.txt","w",stdout);</span></span><br><span class="line">    <span class="keyword">int</span> t;<span class="built_in">cin</span>&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        solve();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-          
-          <category> 笔记 </category>
-          
+        <category>测试</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 计算机网络 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>计算机网络(第七版)谢希仁-第2章 物理层</title>
-      <link href="/2020/06/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC2%E7%AB%A0%20%E7%89%A9%E7%90%86%E5%B1%82/"/>
-      <url>/2020/06/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC2%E7%AB%A0%20%E7%89%A9%E7%90%86%E5%B1%82/</url>
-      
-        <content type="html"><![CDATA[<h1 id="第-2-章-物理层"><a href="#第-2-章-物理层" class="headerlink" title="第 2 章  物理层"></a>第 2 章  物理层</h1><h2 id="物理层的基本概念"><a href="#物理层的基本概念" class="headerlink" title="物理层的基本概念"></a>物理层的基本概念</h2><h3 id="物理层的主要任务描述为确定与传输媒体的接口的一些特性"><a href="#物理层的主要任务描述为确定与传输媒体的接口的一些特性" class="headerlink" title="物理层的主要任务描述为确定与传输媒体的接口的一些特性"></a>物理层的主要任务描述为确定与传输媒体的接口的一些特性</h3><ul><li><p>机械特性    指明接口所用接线器的形状和尺寸、引线数目和排列、固定和锁定装置等等。</p></li><li><p>电气特性    指明在接口电缆的各条线上出现的电压的范围。</p><a id="more"></a></li><li><p>功能特性    指明某条线上出现的某一电平的电压表示何种意义。</p></li><li><p>过程特性    指明对于不同功能的各种可能事件的出现顺序。 </p></li></ul><h2 id="数据通信的基础知识"><a href="#数据通信的基础知识" class="headerlink" title="数据通信的基础知识"></a>数据通信的基础知识</h2><h3 id="数据通信系统的模型"><a href="#数据通信系统的模型" class="headerlink" title="数据通信系统的模型"></a>数据通信系统的模型</h3><ul><li><p>一个数据通信系统可划分为三大部分：源系统(或发送端、发送方)、传输系统(或传输网络)和目的系统(或接收端、接收方)。</p><ul><li>源系统：<ul><li>源点： 源点设备产生要传输的数据。</li><li>发送器： 通常源点生成的数字比特流要通过发送器编码后才能够在传输系统中进行传输。典型的发送器就是调制器。</li></ul></li><li>目的系统：<ul><li>接收器： 接收传输系统传送来的信号，并把它转换成能够被目的设备处理的信息。典型的接收器是解调器。</li><li>终点： 终点设备从接收器获取传送来的数字比特流，然后把信息输出。(目的站或信宿)</li></ul></li></ul></li><li><p>常用术语：</p><ul><li><p>通信的目的是传送消息。</p></li><li><p>数据是运送消息的实体。</p></li><li><p>信号则是数据的电气或电磁的表现。</p><ul><li><p>根据参数分为以下两大类：</p><ul><li><p>模拟信号：(或连续信号) 代表消息的参数的取值是连续的。</p></li><li><p>数字信号：(或离散信号) 代表消息的参数的取值是离散的。</p></li></ul></li></ul></li></ul></li></ul><h3 id="有关信道的几个基本概念"><a href="#有关信道的几个基本概念" class="headerlink" title="有关信道的几个基本概念"></a>有关信道的几个基本概念</h3><ul><li><p>信道：传送信息的媒体。因子，一条通信电路往往包含一条发送信道和一条接收信道。</p></li><li><p>单向通信（单工通信）——只能有一个方向的通信而没有反方向的交互。</p></li><li><p>双向交替通信（半双工通信）——通信的双方都可以发送信息，但不能双方同时发送(当然也就不能同时接收)。</p></li><li><p>双向同时通信（全双工通信）——通信的双方可以同时发送和接收信息。 </p></li><li><p>基本的带通调制方法 (P44)</p><ul><li><p>调幅(AM)：载波的振幅随基带数字信号而变化。 </p></li><li><p>调频(FM)：载波的频率随基带数字信号而变化。</p></li><li><p>调相(PM) ：载波的初始相位随基带数字信号而变化。</p></li></ul></li></ul><h3 id="信道的极限容量"><a href="#信道的极限容量" class="headerlink" title="信道的极限容量"></a>信道的极限容量</h3><ul><li><p>信道能够通过的频率范围</p><ul><li>1924 年，奈奎斯特(Nyquist)就推导出了著名的奈氏准则。他给出了在假定的理想条件下，为了避免码间串扰，码元的传输速率的上限值</li><li>在任何信道中，码元传输的速率是有上限的，传输速率超过此上限，就会出现严重的码间串扰的问题，使接收端对码元的判决(即识别)成为不可能。</li></ul></li><li><p>信噪比 （P45)</p></li><li><p>信噪比：信号的平均功率和噪声的平均功率之比。</p></li><li><p>香农(Shannon)用信息论的理论推导出了带宽受限且有高斯白噪声干扰的信道的极限、无差错的信息传输速率。<br>信道的极限信息传输速率 C 可表达为<br>C = W log2(1+S/N)  (bit/s )</p><pre><code>W 为信道的带宽（以 Hz 为单位）；S 为信道内所传信号的平均功率；N 为信道内部的高斯噪声功率。</code></pre><ul><li><p>香农公式表明</p><ul><li>信道的带宽或信道中的信噪比越大，则信息的极限传输速率就越高。 </li><li>只要信息传输速率低于信道的极限信息传输速率，就一定可以找到某种办法来实现无差错的传输。</li><li>若信道带宽 W 或信噪比 S/N 没有上限（当然实际信道不可能是这样的），则信道的极限信息传输速率 C 也就没有上限。</li><li>实际信道上能够达到的信息传输速率要比香农的极限传输速率低不少。</li></ul></li></ul></li></ul><p>  ​            </p><h2 id="物理层下面的传输媒体"><a href="#物理层下面的传输媒体" class="headerlink" title="物理层下面的传输媒体"></a>物理层下面的传输媒体</h2><h3 id="导向传输媒体"><a href="#导向传输媒体" class="headerlink" title="导向传输媒体"></a>导向传输媒体</h3><pre><code>P47</code></pre><ul><li><p>双绞线：双绞线已成为局域网中的主流传输媒体</p><ul><li><strong>屏蔽双绞线 STP</strong> (Shielded Twisted Pair)</li><li><strong>无屏蔽双绞线 UTP</strong> (Unshielded Twisted Pair)</li></ul></li><li><p>同轴电缆：</p><ul><li><strong>细缆</strong>（适合短距离，安装容易，造价低）</li><li><strong>粗缆</strong>（适合较大局域网，布线距离长，可靠性好）</li></ul></li><li><p>光纤：光纤有很好的抗电磁干扰特性和很宽的频带，主要用在环形网中</p><ul><li><strong>多模光纤</strong>（用发光二极管，便宜，定向性较差）</li><li><strong>单模光纤</strong>（注入激光二极管，定向性好）</li></ul></li></ul><h3 id="非导向传输媒体"><a href="#非导向传输媒体" class="headerlink" title="非导向传输媒体"></a>非导向传输媒体</h3><pre><code>P49</code></pre><p>非导向传输媒体：微波、红外线、激光、卫星通信</p><ul><li><p>无线传输所使用的频段很广。</p></li><li><p>短波通信主要是靠电离层的反射，但短波信道的通信质量较差。</p></li><li><p>微波在空间主要是直线传播。 </p><ul><li><p>卫星通信  </p></li><li><p>地面微波接力通信</p></li></ul></li></ul><h2 id="信道复用技术"><a href="#信道复用技术" class="headerlink" title="信道复用技术"></a>信道复用技术</h2><h3 id="频分复用、时分复用和统计时分复用"><a href="#频分复用、时分复用和统计时分复用" class="headerlink" title="频分复用、时分复用和统计时分复用"></a>频分复用、时分复用和统计时分复用</h3><pre><code>P53        需要掌握计算</code></pre><ul><li>频分复用 FDM(Frequency Division Multiplexing) <ul><li>用户在分配到一定的频带后，在通信过程中自始至终都占用这个频带。</li></ul></li><li>时分复用TDM(Time Division Multiplexing) <ul><li>时分复用则是将时间划分为一段段等长的时分复用帧（TDM 帧）。每一个时分复用的用户在每一个 TDM 帧中占用固定序号的时隙。</li></ul></li><li>统计时分复用 STDM(Statistic TDM)  <ul><li>是对时分复用的一种改进，不固定每个用户在时分复用帧中的位置，只要有数据就集中起来组成统计时分复用帧然后发送。<h3 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h3></li></ul></li><li>波分复用 WDM(Wavelength Division Multiplexing)  <ul><li>光的频分复用。由于光的频率很高，因此习惯上用波长而不是频率来表示所使用的光载波。<h3 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h3></li></ul></li><li>码分复用 CDM(Code Division Multiplexing)  <ul><li>常用的名词是码分多址 CDMA     (Code Division Multiple Access)。</li><li>各用户使用经过特殊挑选的不同码型，因此彼此不会造成干扰。</li><li>这种系统发送的信号有很强的抗干扰能力，其频谱类似于白噪声，不易被敌人发现。 </li><li>每一个比特时间划分为 m 个短的间隔，称为码片(chip)。</li><li>具体内容<ul><li>1.为每个用户分配 m bit 的码片，并且所有的码片正交，对于任意两个码片 S 和 T 有</li><li>2.为了讨论方便，取 m=8，设码片 s 为 00011011。在拥有该码片的用户发送比特 1 时就发送该码片，发送比特 0 时就发送该码片的反码 11100100。</li><li>在计算时将 00011011 记作 (-1 -1 -1 +1 +1 -1 +1 +1)，可以得到(其中 S’ 为 S 的反码。)</li><li>3.利用上面的式子我们知道，当接收端使用码片  对接收到的数据进行内积运算时，结果为 0 的是其它用户发送的数据，结果为 1 的是用户发送的比特 1，结果为 -1 的是用户发送的比特 0。</li><li>4.码分复用需要发送的数据量为原先的 m 倍。</li></ul></li></ul></li></ul><h2 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h2><h3 id="脉码调制-PCM-体制"><a href="#脉码调制-PCM-体制" class="headerlink" title="脉码调制 PCM 体制"></a>脉码调制 PCM 体制</h3><h3 id="同步光纤网-SONET-和同步数字系列-SDH"><a href="#同步光纤网-SONET-和同步数字系列-SDH" class="headerlink" title="同步光纤网 SONET 和同步数字系列 SDH"></a>同步光纤网 SONET 和同步数字系列 SDH</h3><h2 id="宽带接入技术"><a href="#宽带接入技术" class="headerlink" title="宽带接入技术"></a>宽带接入技术</h2><h3 id="xDSL技术"><a href="#xDSL技术" class="headerlink" title="xDSL技术"></a>xDSL技术</h3><ul><li>xDSL 技术就是用数字技术对现有的模拟电话用户线进行改造，使它能够承载宽带业务。把 0~4 kHz 低端频谱留给传统电话使用，而把原来没有被利用的高端频谱留给用户上网使用。<h3 id="光纤同轴混合网（HFC-网）"><a href="#光纤同轴混合网（HFC-网）" class="headerlink" title="光纤同轴混合网（HFC 网）"></a>光纤同轴混合网（HFC 网）</h3></li><li>HFC 网是在目前覆盖面很广的有线电视网 CATV 的基础上开发的一种居民宽带接入网。HFC 网除可传送 CATV 外，还提供电话、数据和其他宽带交互型业务。</li></ul><h3 id="FTTx-技术"><a href="#FTTx-技术" class="headerlink" title="FTTx 技术"></a>FTTx 技术</h3><ul><li>FTTx（光纤到……）也是一种实现宽带居民接入网的方案。这里字母 x 可代表不同意思。<ul><li>光纤到家 FTTH (Fiber To The Home)：光纤一直铺设到用户家庭可能是居民接入网最后的解决方法。</li><li>光纤到大楼 FTTB (Fiber To The Building)：光纤进入大楼后就转换为电信号，然后用电缆或双绞线分配到各用户。</li><li>光纤到路边 FTTC (Fiber To The Curb)：从路边到各用户可使用星形结构双绞线作为传输媒体。 </li></ul></li></ul>]]></content>
-      
-      
+      <tags>
+        <tag>测试sss</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux基础命令</title>
+    <url>/2020/05/16/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p><img src="/images/linux.png" alt="overwrote existing file"></p>
+<a id="more"></a>
+
+<h1 id="目录操作命令"><a href="#目录操作命令" class="headerlink" title="目录操作命令"></a>目录操作命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">用途：</span><br><span class="line">    用来对文件进行操作</span><br><span class="line">    </span><br><span class="line">英文原意：list</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]<span class="comment">#ls [选项][文件名或目录名]</span></span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">    -a:显示所有文件</span><br><span class="line">    -A:列出除.及..的其他文件</span><br><span class="line">    -d：显示目录信息，而不是目录下的文件//ls -ld [目录] 显示目录本身详细信息</span><br><span class="line">    -l:长格式显示                        //ls -l [目录]显示目录下的内容</span><br><span class="line">    //ls -l+(h=按照习惯单位显示文件大小(k))</span><br><span class="line">    -t:以文件的大小排序</span><br><span class="line">    -S:以文件的大小排序</span><br><span class="line">    -i:显示文件的i节点号</span><br><span class="line">    -h:以易读的方式显示</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意:change directory</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    对目录的切换</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#cd [目录名]</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    cd+回车:进入家目录</span><br><span class="line">    cd ~:进入家目录</span><br><span class="line">    cd &#x2F;+要进入的目录</span><br><span class="line">    cd -:进入上一次工作路径</span><br><span class="line">    cd .. :入上级目录</span><br><span class="line">    cd .  :进入当前目录</span><br><span class="line">    pwd:查看当前所在目录,可以看到路径</span><br><span class="line"></span><br><span class="line">cd的相对路径和绝对路径的使用:</span><br><span class="line"></span><br><span class="line">    cd &#x2F;usr&#x2F;local&#x2F;src  绝对路径的使用</span><br><span class="line">    </span><br><span class="line">    cd &#x2F;usr进入第一层目录以后</span><br><span class="line">    相对路径的进入是指进入当前目录下的文件</span><br><span class="line">    命令: xxx&#x2F;  注意反斜杠的位置在后面</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：make directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    创建空目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#mkdir [选项] 目录名</span><br><span class="line"></span><br><span class="line">    -p:递归建立所需目录</span><br><span class="line">常见用法：</span><br><span class="line">    mkdir 文件名:创建文件且创建到当前目录</span><br><span class="line">    mkdir -p lm&#x2F;movie&#x2F;jp&#x2F;cangls :递归创建一系列文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="rmdir命令"><a href="#rmdir命令" class="headerlink" title="rmdir命令"></a>rmdir命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：remove empty directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    删除空目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]# rmdir [选项] 目录名</span><br><span class="line"></span><br><span class="line">    -p:递归删除目录</span><br><span class="line">常见用法：</span><br><span class="line">    rmdir 文件名:删除该文件</span><br><span class="line">    rmdir -p lm&#x2F;movie&#x2F;jp&#x2F;cangls :递归删除一系列文件</span><br><span class="line">    </span><br><span class="line">rmidr命令比较笨一般不使用，不论删除的文件还是目录以后都会使用rm命令</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：list contents of directories in a tree-like format</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    显示目录树</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tree</span><br><span class="line"></span><br><span class="line">    tree &#x2F;etc&#x2F;:显示etc文件的目录树</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="文件操作命令"><a href="#文件操作命令" class="headerlink" title="文件操作命令"></a>文件操作命令</h1><h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：change file timestamps</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    文件不存在创建文件,文件存在修改</span><br><span class="line">    文件的时间（访问时间，数据修改时间，状态修改时间）</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#touch [选项] 文件名或目录名</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    touch -a xx:只修改文件的访问时间(Access Time)</span><br><span class="line">    touch -c xx:如果文件不存在则建立新文件</span><br><span class="line">    touch -d xx:把文件的时间改为制定的时间</span><br><span class="line">    touch -m xx:只修改文件的数据修改时间</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">    1.在Linux中文件没有创建时间</span><br><span class="line">    2.可以通过stat命令查看文件的时间</span><br><span class="line">    3.在Linux中氛围访问时间，数据修改时间，状态修改时间</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="stat命令"><a href="#stat命令" class="headerlink" title="stat命令"></a>stat命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：display file or file system status</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    查看文件详细信息的命令，而且可以看到文件的三个时间</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#stat [选项] 文件名或目录名</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    -f :查看文件所在的文件系统信息，而不是查看文件的信息</span><br><span class="line">    echo 内容 &gt; 文件名:向某个文件输入xxx内容(修改了时间的变化)</span><br><span class="line">    chown nobody 文件名：只修文件的状态时间</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：concatenate files and print on the standard output</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    合并文件并打印输出到标准输出</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#cat [选项] 文件名</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">    -A:相当于-vET选项的整合，用于列出所有隐藏符号</span><br><span class="line">    -E:列出每行结尾的回车符￥</span><br><span class="line">    -n:显示行号</span><br><span class="line">    -T:把Tab键用^I显示出来</span><br><span class="line">    -v:列出特殊字符</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：file perusal filter for crt viewin</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    当文件过大使用cat不能满足需要是,more是分屏显示文件的命令</span><br><span class="line"></span><br><span class="line">命令格式:</span><br><span class="line">[root@localhost ~]#more 文件名</span><br><span class="line"></span><br><span class="line">常用的交互命令：</span><br><span class="line">    空格键：向下翻页</span><br><span class="line">    b：向上翻页</span><br><span class="line">    回车键：向下滚动一行</span><br><span class="line">    &#x2F;字符串：搜索指定字符串</span><br><span class="line">    q：退出</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="less命令"><a href="#less命令" class="headerlink" title="less命令"></a>less命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：opposite of more</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    more为分屏显示，less是分行显示命令</span><br><span class="line">    q退出，上下移动</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="head命令"><a href="#head命令" class="headerlink" title="head命令"></a>head命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：output the first part of files</span><br><span class="line">    </span><br><span class="line">用途：</span><br><span class="line">        显示文件开头的命令，默认显示文件的开头10行内容</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#head [选项] 文件名</span><br><span class="line">选项：</span><br><span class="line">    -n 行数：从文件头开始，显示指定行数</span><br><span class="line">    -v ：显示文件名</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    head -n xx 文件名：显示xx行内容，默认10行</span><br><span class="line">    也可以直接 head -xx 文件名：-行数即可省略-n</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：output the last part of files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    显示文件结尾的内容</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tial [选项] 文件名</span><br><span class="line">选项：</span><br><span class="line">    -n 行数：从文件结尾开始，显示指定行数</span><br><span class="line">    -f :监听文件的新增内容</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    tail -n 20 xxx</span><br><span class="line">    tail -f xxx：会监视文件的更新且光标不会跳出</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="ln命令"><a href="#ln命令" class="headerlink" title="ln命令"></a>ln命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：make links between file</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    在文件之间建立链接</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#ln [选项] 源文件 目标文件</span><br><span class="line">选项：</span><br><span class="line">    -s：建立软链接文件。如果不加&quot;-s&quot;则建立硬链接文件</span><br><span class="line">    -f：强制。如果目标文件已经存在，则删除目标文件后再建立链接文件</span><br><span class="line">    </span><br><span class="line">注意：</span><br><span class="line">        1.软链接的源文件必须写成绝对路径</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="目录和文件都能操作的命令"><a href="#目录和文件都能操作的命令" class="headerlink" title="目录和文件都能操作的命令"></a>目录和文件都能操作的命令</h1><h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：remove files or directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    删除文件或者删除目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#rm [选项] 文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -f: 强制删除((force)</span><br><span class="line">    -i：交互删除，在删除之前会询问用户</span><br><span class="line">    -r: 递归删除，可以删除目录(recursive)</span><br><span class="line">    默认 -i 文件名</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    rm -r 目录名：递归删除时候会分别进入各个目录然后询问是否删除</span><br><span class="line">    rm -rf 目录名: 强制删除</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：copy files and directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    复制文件和目录</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#cp [选项] 源文件 目标文件</span><br><span class="line">选项：</span><br><span class="line">    -a：相当于-dpr选项的集合，这几个选项我们一一介绍</span><br><span class="line">    -d：如果源文件为软链接(对硬链接无效)。则复制出的目标文件也为软链接</span><br><span class="line">    -i：询问，如果目标文件已经存在，则会询问是否覆盖</span><br><span class="line">    -l：把目标文件建立为源文件的硬链接文件，而不是复制源文件</span><br><span class="line">    -s：把目标文件建立为源文件的链接文件，而不是复制源文件</span><br><span class="line">    -p：复制后目标文件保留源文件的属性(包括所有者、所属组、权限和实践)</span><br><span class="line">    -r：递归复制，用于复制目录</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    cp -i cangls &#x2F;tmp&#x2F;bols ：文件的改名复制(bols是改名复制)</span><br><span class="line">    cp -r good &#x2F;tmp&#x2F;xx ：目录的同名复制(xx为改名复制)</span><br><span class="line">    cp -d &#x2F;tmp&#x2F;links_good &#x2F;tmp&#x2F;links_goods ：软链接复制(对硬链接无效)</span><br><span class="line">    cp -p &#x2F;tmp&#x2F;good &#x2F;tmp&#x2F;goods ：保留源文件的属性(不会修改时间等源文件属性)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：move(rename) files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    用来移动或改名(剪切)</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#mv [选项 源文件 目标文件</span><br><span class="line">选项：</span><br><span class="line">    -f：强制覆盖，如果目标文件已经存在，则不询问，强制覆盖</span><br><span class="line">    -i：交互移动，如果目标文件已经存在，则询问用户是否覆盖(默认选项)</span><br><span class="line">    -n：如果目标文件已经存在，则不会覆盖移动，而且不询问用户</span><br><span class="line">    -v：显示详细信息</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    mv good &#x2F;tmp：移动文件或目录</span><br><span class="line">    mkdir movie</span><br><span class="line">    mv movie&#x2F; &#x2F;tmp：将movie目录移到&#x2F;tmp下(不需要像cp一样加入-r选项)</span><br><span class="line">    mv -vn bols cangls lmls &#x2F;tmp ：将前三个文件移动到tmp目录下 &#x2F;v用于显示详细过程</span><br><span class="line">    mv xxx yyy：把xxx改名为yyy</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="基本权限命令"><a href="#基本权限命令" class="headerlink" title="基本权限命令"></a>基本权限命令</h1><h2 id="chmod命令"><a href="#chmod命令" class="headerlink" title="chmod命令"></a>chmod命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：change file mode bits</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    用来修改文件的权限模式</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#chmod [选项] 权限模式 文件名</span><br><span class="line">选项：</span><br><span class="line">    -R：递归设置权限，也就是给子目录中的所有文件设定权限</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    chmod x+y 文件名：给文件中x用户添加y权限</span><br><span class="line">    chmod x+y,x2+y2 文件名：给多个用户同时添加权限</span><br><span class="line">    chmod x-y,x2-y2文件名：给x用户减去某权限</span><br><span class="line">    chmod x&#x3D;rwx,y&#x3D;rw1,z&#x3D;rwx：给x,y,z用户设置设置rwx其中的权限(rwx这里写在一起为了方便)</span><br><span class="line">数字权限:</span><br><span class="line">    4：代表“r”权限</span><br><span class="line">    2：代表“w”权限</span><br><span class="line">    1：代表“x”权限</span><br><span class="line">    </span><br><span class="line">    chmod 755 文件名：给文件赋予755权限</span><br><span class="line">        解释：</span><br><span class="line">            第一个数字“7”代表给所有者的权限是“4+2+1”，也就是读、写、执行权限</span><br><span class="line">            第二个数字“5”代表给所属组的权限是“4+1”，也就是读、执行权限</span><br><span class="line">            第三个数字&quot;5&quot;代表给其他人的权限是同上</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="所有者和所属组命令"><a href="#所有者和所属组命令" class="headerlink" title="所有者和所属组命令"></a>所有者和所属组命令</h1><h2 id="chown命令"><a href="#chown命令" class="headerlink" title="chown命令"></a>chown命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：change file owner and group</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    修改文件和目录的所有者所属组的命令</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#chown [选项] 所有者：所属组 文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -R：递归设置权限，也就是给子目录中的所有文件设置权限</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    chown user 文件名：将文件的&quot;所有者&quot;设置为user，这时user对这个文件具有了读、写权限</span><br><span class="line">    chown user:user good：“：”前是所有者后是所属组，也可以用&quot;.&quot;来代替</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="chgrp命令"><a href="#chgrp命令" class="headerlink" title="chgrp命令"></a>chgrp命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：change group ownership</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    修改文件和目录的所属组</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]# chgrp 用户组 文件名</span><br><span class="line"></span><br><span class="line">    chgrp user test：将文件test的所属组设置为user用户组</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="umask命令"><a href="#umask命令" class="headerlink" title="umask命令"></a>umask命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">umask命令</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    查看默认权限</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#umask xx</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#umask ：直接使用是用八进制数显示umask权限</span><br><span class="line">[root@localhost ~]#unmask -S：用字母表示文件和目录的初始权限</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h1><h2 id="man命令"><a href="#man命令" class="headerlink" title="man命令"></a>man命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：format and display the on-line manual pages</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    显示联机帮助手册</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#man [选项] 命令</span><br><span class="line">选项：</span><br><span class="line">    -f：查看命令拥有哪个级别的帮助</span><br><span class="line">    -k：查看和命令相关的所有帮助</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    man 命令名称：查看命令的帮助</span><br><span class="line">    man -f 命令：查看命令的帮助级别</span><br><span class="line">    man -k useradd：会列出所有包含useradd字符串的命令(字符串还可以改成别的)</span><br><span class="line">    whatis命令和 man -f是一致的</span><br><span class="line">    apropos命令和man -k是一致的</span><br><span class="line">    whoami 查看当前用户</span><br><span class="line">    whereis xx 、whatis xx命令在哪里、命令是干什么的</span><br></pre></td></tr></table></figure>
+
+<h3 id="快捷键："><a href="#快捷键：" class="headerlink" title="快捷键："></a>快捷键：</h3><p> <img src="https://img2020.cnblogs.com/blog/1878513/202004/1878513-20200419152039516-1223878247.png" alt="img"></p>
+<h3 id="命令帮助级别："><a href="#命令帮助级别：" class="headerlink" title="命令帮助级别："></a>命令帮助级别：</h3><p><img src="https://img2020.cnblogs.com/blog/1878513/202004/1878513-20200419152203569-1276414414.png" alt="img"></p>
+<h2 id="info命令"><a href="#info命令" class="headerlink" title="info命令"></a>info命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">info命令的帮助信息是一套完整的资料，每个单独命令的帮助信息只是这套完整资料中的某一个章节</span><br><span class="line">    info xxx</span><br></pre></td></tr></table></figure>
+
+<h3 id="快捷键：-1"><a href="#快捷键：-1" class="headerlink" title="快捷键："></a>快捷键：</h3><p><img src="https://img2020.cnblogs.com/blog/1878513/202004/1878513-20200419152118785-1937084526.png" alt="img"></p>
+<h2 id="help命令："><a href="#help命令：" class="headerlink" title="help命令："></a>help命令：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">help命令只能获取shell内置命令的帮助，但是在Linux中绝大多数命令是外部命令，所以help命令的作用非常有限</span><br><span class="line">而且内置命令可以使用man命令获取帮助</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="–help选项"><a href="#–help选项" class="headerlink" title="–help选项"></a>–help选项</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">绝大多数命令都可以使用&quot;--help&quot;选项来查看帮助</span><br><span class="line">    列如：ls --help</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="搜索命令"><a href="#搜索命令" class="headerlink" title="搜索命令"></a>搜索命令</h1><h2 id="whereis命令"><a href="#whereis命令" class="headerlink" title="whereis命令"></a>whereis命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：locate the binary source,and manual page files for a command</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    不能搜索普通文件，只能(搜索系统命令)</span><br><span class="line">    查找二进制命令、源文件和帮助文档的命令</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#where [选项] 命令</span><br><span class="line">选项：</span><br><span class="line">    -b：只查找二进制命令</span><br><span class="line">    -m：只查找帮助文档</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    whereis ls：即可看到二进制命令的位置，也可以看到帮助文档的位置，但是无法查看普通文件</span><br><span class="line">    whereis -b ls：只查看二进制命令的位置</span><br><span class="line">    whereis -m ls：只查看帮助文档的位置</span><br></pre></td></tr></table></figure>
+
+<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：shows the full path of(shell) commands</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    列出命令的所在路径和命令的别名(搜索系统命令的命令)</span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#which xx</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="locate命令"><a href="#locate命令" class="headerlink" title="locate命令"></a>locate命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：find files by name</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    按照文件名来搜索文件</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#locate [选项] 文件名</span><br><span class="line">选项：</span><br><span class="line">    -i：忽略大小写</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    locate install.log：搜索文件名叫install.log的文件</span><br><span class="line">    locate mkdir：由于系统命令其实也是文件，所以也可以按照文件名来搜索系统命令</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">    1.locate命令不会直接搜索硬盘空间，而是搜索locate数据库，每当用户退出登录或重启系统是locate数据库才会更新，所以我们无法查找到新建立文件</span><br><span class="line">    2.如果不想退出登录或重启系统，则可以通过updatedb命令手工更新这个数据</span><br><span class="line">    3.loate的配置文件中会设置不搜索的区域比如说：文件系统类型、(.git .hg .svn)扩展名、系统目录</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：search for files in a drectory hierarchy</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    按照设置的&quot;关键&quot;来按照关键搜索文件</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#find 搜索路径 [选项] 搜索内容</span><br><span class="line">选项：</span><br><span class="line">    -name：按照文件名搜索</span><br><span class="line">    -iname：按照文件名搜索，不区分文件名大小写</span><br><span class="line">    -inum：按照inode号搜索</span><br><span class="line">    -size [+-]大小：按照指定大小搜索文件</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    find &#x2F; -name yum.cnf：在&#x2F;目录下搜索文件名是yum.conf的文件(文件名必须完全匹配)</span><br><span class="line">    find . -iname cangls：大小写都搜索出来(即不区分文件名的大小写)</span><br><span class="line">    find . -inum 262147：如果知道inode号，则可以用find命令来查找文件名(按照inode号搜索文件，也是区分硬链接文件的重要手段，因为硬链接文件的inode号是一致的)</span><br><span class="line">    find . -size 25k ：在当前目录下查找大小刚好是25KB的文件</span><br><span class="line">    find . -size -25k：在当前目录下查找小于25k的文件</span><br><span class="line">    find . -size 1M：主要按M查询字母要大写</span><br><span class="line">    find . -size 1207c：按1207字节来搜索需要加字母c</span><br><span class="line">    </span><br><span class="line">按照修改时间搜索：</span><br><span class="line">选项：</span><br><span class="line">    -atime [+-]时间：按照文件访问时间搜索</span><br><span class="line">    -mtime [+-]时间：按照文件数据修改时间搜索</span><br><span class="line">    -ctime [+-]时间：按照文件状态修改时间搜索</span><br><span class="line">        [+-]时间的含义：</span><br><span class="line">            -5：代表5天内修改的文件</span><br><span class="line">             5：代表前5-6天那一天修改的文件</span><br><span class="line">            +5：代表6天前修改的时间</span><br><span class="line">    当然也有按分钟查询的：amin、mmin、cmin</span><br><span class="line"></span><br><span class="line">按照权限搜索：</span><br><span class="line">选项：</span><br><span class="line">    -perm 权限模式：查找文件权限刚好等于“权限模式”的文件</span><br><span class="line">    -perm -权限模式：查找文件权限全部包含“权限模式”的文件</span><br><span class="line">    -perm +权限模式：查找文件权限包含”权限模式“的任意一个权限的文件</span><br><span class="line">    </span><br><span class="line">按照所有者和所属组搜索</span><br><span class="line">选项：</span><br><span class="line">    -uid 用户ID：按照用户ID查找所有者是指定ID的文件</span><br><span class="line">    -gid 组ID：按照用户组ID查找所属组是制定ID的文件</span><br><span class="line">    —user 用户名：按照用户名查找所有者是指定用户的文件</span><br><span class="line">    -group 组名：按照组名查找所属组是制定用户组的文件</span><br><span class="line">    -nouser：查找没有所有者的文件</span><br><span class="line"></span><br><span class="line">按照文件类型搜索</span><br><span class="line">选项：</span><br><span class="line">    -type d：查找目录</span><br><span class="line">    -type f：查找普通文件</span><br><span class="line">    -type l：查找软链接文件</span><br><span class="line">    </span><br><span class="line">逻辑运算符</span><br><span class="line">选项：</span><br><span class="line">    -a：and逻辑与</span><br><span class="line">    -o：or逻辑或</span><br><span class="line">    -not：not逻辑非</span><br><span class="line"></span><br><span class="line">    find . -size +2k -a -type f：在当前目录下搜索大于2kb并且文件类型是普通文件的文件</span><br><span class="line">    find . -not -name cangls：在当前目录下搜索文件名不是cangls的文件</span><br><span class="line">        注意-not的位置</span><br><span class="line">其他选项：</span><br><span class="line">    -exec:</span><br><span class="line">        [root@localhost ~]#find 搜索路径 [选项] 搜索内容 -exec 命令2 &#123;&#125; \;</span><br><span class="line">        &quot;&#123;&#125;&quot;和&quot;\;&quot;是标注格式，-exec调用命令2来处理find命令的结果&quot;&#123;&#125;&quot;这个就是find命令的查找结果</span><br><span class="line">            find . -perm 444 -exec ls -l &#123;&#125; \;：使用-exec选项把find命令结果交给&quot;ls -l&quot;命令处理</span><br><span class="line">            </span><br><span class="line">    -ok：</span><br><span class="line">        基本与-exec相同，但是-ok会进行询问用户是否这样处理，而-exec不会询问而是直接处理</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="压缩和解压命令"><a href="#压缩和解压命令" class="headerlink" title="压缩和解压命令"></a>压缩和解压命令</h1><p> .</p>
+<h2 id="zip格式的压缩命令"><a href="#zip格式的压缩命令" class="headerlink" title="zip格式的压缩命令"></a>zip格式的压缩命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：package and compress(archive) files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    压缩文件或目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#zip [选项] 压缩包名 源文件或源目录</span><br><span class="line">选项：</span><br><span class="line">    -r：压缩目录</span><br><span class="line">    </span><br><span class="line">常用格式：</span><br><span class="line">    zip test.zip xxx1 xxx2：同时压缩多个文件到test.zip中</span><br><span class="line">    zip -r test.zip xxx1：压缩目录</span><br></pre></td></tr></table></figure>
+
+<h3 id="zip解压："><a href="#zip解压：" class="headerlink" title="zip解压："></a>zip解压：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：list,test and extract compressed files in a ZIP archive</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    列表、测试、和提取压缩文件中的文件</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#unzip [选项] 压缩包名</span><br><span class="line">选项：</span><br><span class="line">    -d：指定解压的位置</span><br><span class="line">    unzip -d &#x2F;tmp&#x2F; test.zip：把zip解压到指定目录</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="gz格式压缩命令"><a href="#gz格式压缩命令" class="headerlink" title=".gz格式压缩命令"></a>.gz格式压缩命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：compress or expand files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    压缩文件或目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#gzip [选项] 源文件</span><br><span class="line">选项：</span><br><span class="line">    -c：将压缩数据输出到标准输出中，可以用于保留源文件</span><br><span class="line">    -d：解压缩</span><br><span class="line">    -r：压缩目录</span><br><span class="line">    -v：显示压缩文件的信息</span><br><span class="line">    -数字：用于指定压缩等级，-1压缩等级最低，压缩比最差；-9压缩比最高。默认压缩比是-6</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    gzip -r test&#x2F;：注意这个压缩目录是把目录下的文件分别压缩</span><br><span class="line">    gzip -d xxx：解压缩</span><br><span class="line">    </span><br><span class="line">    zcat xxx：查看“.gz”格式压缩的文本文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="“gunzip压缩包”命令"><a href="#“gunzip压缩包”命令" class="headerlink" title="“gunzip压缩包”命令"></a>“gunzip压缩包”命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：compress or expand files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    解压文件或目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#gunzip [选项] 名字</span><br><span class="line">选项：</span><br><span class="line">    -r：解压缩目录下的内容注意不是解“打包”</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="bz2格式压缩命令"><a href="#bz2格式压缩命令" class="headerlink" title=".bz2格式压缩命令"></a>.bz2格式压缩命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：a block-sorting files compressor</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    .bz2格式的压缩命令，不支持目录压缩</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#bzip2 [选项] 源文件</span><br><span class="line">选项：</span><br><span class="line">    -d：解压缩</span><br><span class="line">    -k：压缩式，保留源文件</span><br><span class="line">    -v：显示压缩的详细信息</span><br><span class="line">    -数字：同hzip</span><br><span class="line">    </span><br><span class="line">    bzcat xxx：查看格式压缩的文本文件</span><br><span class="line">[root@localhost ~]#bzip2 -d xx：解压缩</span><br><span class="line">解压缩：</span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#bunzip2 [选项] 源文件</span><br><span class="line">选项：</span><br><span class="line">    -k：解压缩时，保留源文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="tar格式的打包命令"><a href="#tar格式的打包命令" class="headerlink" title=".tar格式的打包命令"></a>.tar格式的打包命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：tar</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    打包与解打包命令</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tar [选项] [-f 压缩包名] 源文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -c：打包</span><br><span class="line">    -f：指定压缩包的文件名。压缩包的扩展名是用来给管理员识别格式的，所以一定要正确指定扩展名</span><br><span class="line">    -v：显示打包文件的过程</span><br><span class="line">    </span><br><span class="line">解打包：</span><br><span class="line">    -x：解打包</span><br><span class="line">    -t：测试，就是不解打包，知识查看包中有哪些文件</span><br><span class="line">    -C 目录：指定解打包位置</span><br><span class="line">常见用法：</span><br><span class="line">    tar -cvf xxx.tar xxx：-cvf一般是习惯用法</span><br><span class="line">    tar -cvf ana.tar anaconda-ks.cfg &#x2F;tmp ：把anaconda-ks.cfg文件和&#x2F;tmp目录打包成ana.tar(多文件同时打包)</span><br><span class="line">解打包：</span><br><span class="line">    tar -xvf anaconda-ks.cfg.tar 解打包到当前目录下</span><br><span class="line">    tar -xvf anaconda-ks.cfg.tar -C &#x2F;tmp：指定解打包目录，把压缩包解打包到&#x2F;tmp目录下</span><br><span class="line">    tar -tvf test.tar 查看文件包中有哪些文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="tar-gz和-tar-bz2格式命令"><a href="#tar-gz和-tar-bz2格式命令" class="headerlink" title=".tar.gz和.tar.bz2格式命令"></a>.tar.gz和.tar.bz2格式命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tar [选项] 压缩包 源文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -z：压缩和解压缩“.tar.gz”格式</span><br><span class="line">    -j：压缩和解压缩“.tar.bz2”格式</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    tar -zcvf tmp.tar.gz &#x2F;tmp：把&#x2F;tmp目录直接打包压缩为.tar.gz格式</span><br><span class="line">    tar -zcvf tmp.tar.gz：解压缩.tar.gz格式</span><br><span class="line">    同理z换成j即可符合.tar.bz2格式</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="关机和重启命令"><a href="#关机和重启命令" class="headerlink" title="关机和重启命令"></a>关机和重启命令</h1><h2 id="sync数据同步"><a href="#sync数据同步" class="headerlink" title="sync数据同步"></a>sync数据同步</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：flush file system buffers</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    把内存中的数据强制向硬盘中保存</span><br><span class="line">    刷新文件系统缓冲区</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#sync   :最好多执行几次保险起见</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="shutdown命令"><a href="#shutdown命令" class="headerlink" title="shutdown命令"></a>shutdown命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">英文原意：bring the system down</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    关机和重启</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#shutdown [选项] 时间 [警告信息]</span><br><span class="line">选项：</span><br><span class="line">    -c：取消已经执行的shutdown命令</span><br><span class="line">    -h：关机</span><br><span class="line">    -r：重启</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    shutdown -r now：即刻重启</span><br><span class="line">    shutdown -r 05:30 制定时间重启，但会占用前台终端</span><br><span class="line">    shutdown -r 05:30 &amp;：把定时重启命令放入后台，&amp;是后台的意思</span><br><span class="line">    shutdown -c：取消定时重启</span><br><span class="line">    shutdown -r +10：十分钟后重启</span><br><span class="line">    </span><br><span class="line">    shutdown -h now：现在关机</span><br><span class="line">    shutdown -h 05:30：指定时间关机</span><br><span class="line">    shutdown -h +10:十分钟后关机</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="reboot命令"><a href="#reboot命令" class="headerlink" title="reboot命令"></a>reboot命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#reboot：进行重启</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="halt和poweroff命令"><a href="#halt和poweroff命令" class="headerlink" title="halt和poweroff命令"></a>halt和poweroff命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">用途：</span><br><span class="line">    都是关机命令</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#halt</span><br><span class="line">[root@localhost ~]#poweroff</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="init命令"><a href="#init命令" class="headerlink" title="init命令"></a>init命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">用途：</span><br><span class="line">    修改Linux运行级别的命令，也可以用于重启和关机</span><br><span class="line">[root@localhost ~]#init 0：关机，也就是调用系统的0级别</span><br><span class="line">[root@localhost ~]#init 6：重启，也就是调用系统的6级别</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p><img src="https://common.cnblogs.com/editor/tiny_mce/themes/advanced/img/trans.gif" alt="img"></p>
+]]></content>
       <categories>
-          
-          <category> 笔记 </category>
-          
+        <category>Linux</category>
       </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>计算机网络(第七版)谢希仁-第1章 概述</title>
-      <link href="/2020/06/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC1%E7%AB%A0%20%E6%A6%82%E8%BF%B0/"/>
-      <url>/2020/06/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC1%E7%AB%A0%20%E6%A6%82%E8%BF%B0/</url>
-      
-        <content type="html"><![CDATA[<h1 id="第-1-章-概述"><a href="#第-1-章-概述" class="headerlink" title="第 1 章   概述"></a>第 1 章   概述</h1><h2 id="计算机网络在信息时代中的作用"><a href="#计算机网络在信息时代中的作用" class="headerlink" title="计算机网络在信息时代中的作用"></a>计算机网络在信息时代中的作用</h2><ul><li>21 世纪的一些重要特征就是数字化、网络化和信息化，它是一个以网络为核心的信息时代。</li><li>网络是指“三网”，即电信网络、有线电视网络和计算机网络。</li><li>发展最快的并起到核心作用的是计算机网络。<a id="more"></a><h3 id="互联网-Internet-的发展"><a href="#互联网-Internet-的发展" class="headerlink" title="互联网(Internet)的发展"></a>互联网(Internet)的发展</h3></li><li>进入 20 世纪 90 年代以后，以互联网为代表的计算机网络得到了飞速的发展。</li><li>已从最初的教育科研网络逐步发展成为商业网络。</li><li>已成为仅次于全球电话网的世界第二大网络。 <h3 id="互联网的意义"><a href="#互联网的意义" class="headerlink" title="互联网的意义"></a>互联网的意义</h3></li><li>互联网是自印刷术以来人类通信方面最大的变革。</li><li>现在人们的生活、工作、学习和交往都已离不开互联网。 </li><li>互联网已经成为世界上最大的计算机网络。<h2 id="互联网概述"><a href="#互联网概述" class="headerlink" title="互联网概述"></a>互联网概述</h2><h3 id="网络的网络"><a href="#网络的网络" class="headerlink" title="网络的网络"></a>网络的网络</h3></li><li>起源于美国的互联网现已发展成为世界上最大的国际性计算机互联网 </li><li>网络(network)(计算机网络)由若干结点(node)和连接这些结点的链路(link)组成。 </li><li>互连网是“网络的网络”(network of networks)。(网络之间可以通过路由器互连起来，构成覆盖范围更大的计算机网络) </li><li>与网络相连的计算机都称为主机(host)。 </li><li>网络与互连网<ul><li>网络把许多计算机连接在一起。</li><li>互连网把许多网络通过路由器连接在一起。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625115948651-2125443533.png" alt=""><br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120026231-157423551.png" alt=""></li></ul></li></ul><h3 id="互联网发展的三个阶段"><a href="#互联网发展的三个阶段" class="headerlink" title="互联网发展的三个阶段"></a>互联网发展的三个阶段</h3><ul><li>第一阶段是从单个网络 ARPANET 向互连网发展的过程。<ul><li>1969年美国国防部创建第一个分组交换网ARPANET。最初只是一个单个的分组交换网。</li><li>1983 年 TCP/IP 协议成为 ARPANET 上的标准协议。</li><li>人们把 1983 年作为互联网的诞生时间。</li><li>1990年ARPANET正式宣布关闭。</li></ul></li><li>第二阶段的特点是建成了三级结构的互联网。<ul><li>三级计算机网络，分为主干网、地区网和校园网（或企业网）。 </li></ul></li><li>第三阶段的特点是逐渐形成了多层次 ISP 结构的互联网。<ul><li>出现了互联网服务提供者 ISP (Internet Service Provider)。  </li><li>根据提供服务的覆盖面积大小以及所拥有的IP 地址数目的不同，ISP 也分成为不同的层次。</li><li>中国电信、中国联通和中国移动都是我国最有名的ISP。</li><li>根据提欧共服务的覆盖面积大小以所拥有的IP地址数目不同，ISP分为：主干ISP、地区ISP、本地ISP。</li><li>互联网交换点IXP的主要作用就是允许两个网络直接相连并交换分组，而不需要通过第三个网络来转发分组。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120127222-1211275374.png" alt=""></li></ul></li></ul><h3 id="互联网的标准化工作"><a href="#互联网的标准化工作" class="headerlink" title="互联网的标准化工作"></a>互联网的标准化工作</h3><ul><li>制订互联网的正式标准要经过以下的三个阶段 <ul><li>互联网草案(Internet Draft) ——在这个阶段还不是 RFC 文档。</li><li>建议标准(Proposed Standard) ——从这个阶段开始就成为 RFC 文档。</li><li>互联网标准(Internet Standard) ——达到标准后分贝一个编号STD xx。</li></ul></li><li>各种RFC之间的关系<h2 id="互联网的组成"><a href="#互联网的组成" class="headerlink" title="互联网的组成"></a>互联网的组成</h2><h3 id="互联网的边缘部分"><a href="#互联网的边缘部分" class="headerlink" title="互联网的边缘部分"></a>互联网的边缘部分</h3></li><li>由所有连接在互联网上的主机组成。这部分是用户直接使用的，用来进行通信（传送数据、音频或视频）和资源共享。<ul><li>处在互联网边缘的部分就是连接在互联网上的所有的主机。这些主机又称为端系统(end system)。</li><li>“主机 A 和主机 B 进行通信”，实际上是指：“运行在主机 A 上的某个程序和运行在主机 B 上的另一个程序进行通信”。</li><li>即“主机 A 的某个进程和主机 B 上的另一个进程进行通信”。或简称为“计算机之间通信” </li></ul></li><li>边缘的端系统之间的通信方式通常分为两大类：客户-服务器方式(C/S)和对等方式(P2P)。( P11)<h3 id="互联网的核心部分"><a href="#互联网的核心部分" class="headerlink" title="互联网的核心部分"></a>互联网的核心部分</h3></li><li>由大量网络和连接这些网络的路由器组成。这部分是为边缘部分提供服务的（提供连通性和交换）<ul><li>网络核心部分是互联网中最复杂的部分。</li><li>网络中的核心部分要向网络边缘中的大量主机提供连通性，使边缘部分中的任何一个主机都能够向其他主机通信（即传送或接收各种形式的数据）。</li><li>在网络核心部分起特殊作用的是路由器(router)。(电路交换、分组交换和报文交换特点 P13)<ul><li>路由器是实现分组交换(packet switching)的关键构件，其任务是转发收到的分组，这是网络核心部分最重要的功能。<ul><li>在路由器中的输入和输出端口之间没有直接连线。</li><li>路由器处理分组的过程是：<ul><li>把收到的分组先放入缓存（暂时存储）；</li><li>查找转发表，找出到某个目的地址应从哪个端口转发；</li><li>把分组送到适当的端口转发出去。 </li></ul></li></ul></li></ul></li><li>路由器是实现分组交换(packet switching)的关键构件，其任务是转发收到的分组，这是网络核心部分最重要的功能。<br><img src="/images/jsjwlbybf.png" alt=""></li></ul></li></ul><h2 id="计算机网络在我国的发展"><a href="#计算机网络在我国的发展" class="headerlink" title="计算机网络在我国的发展"></a>计算机网络在我国的发展</h2><ul><li>(1) 中国公用计算机互联网 CHINANET</li><li>(2) 中国教育和科研计算机网 CERNET</li><li>(3) 中国科学技术网 CSTNET</li><li>(4) 中国联通互联网 UNINET</li><li>(5) 中国网通公用互联网 CNCNET</li><li>(6) 中国国际经济贸易互联网 CIETNET</li><li>(7) 中国移动互联网 CMNET</li><li>(8) 中国长城互联网 CGWNET（建设中）</li><li>(9) 中国卫星集团互联网 CSNET（建设中） <h2 id="计算机网络的类别"><a href="#计算机网络的类别" class="headerlink" title="计算机网络的类别"></a>计算机网络的类别</h2><h3 id="计算机网络的定义"><a href="#计算机网络的定义" class="headerlink" title="计算机网络的定义"></a>计算机网络的定义</h3></li><li>较好的定义：计算机网络是由一些通用的、可编程的硬件互连而成的，而这些硬件并非专门用来实现某一特定目的。</li><li>互联网(Internet)是“网络的网络”。<h3 id="几种不同类别的网络"><a href="#几种不同类别的网络" class="headerlink" title="几种不同类别的网络"></a>几种不同类别的网络</h3></li><li>不同作用范围的网络 <ul><li>广域网 WAN (Wide Area Network)</li><li>局域网 LAN (Local Area Network) </li><li>城域网 MAN (Metropolitan Area Network)</li><li>个人区域网 PAN (Personal Area Network) </li></ul></li><li>按照网络的使用者进行分类 <ul><li>公用网 (public network) </li><li>专用网 (private network) </li></ul></li><li>用来吧用户接入到互联网的网络<ul><li>这种网络称为 接入网AN(Access Network)，又称为本地接入网或居民接入网。</li><li>接入网是从某个用户端系统到互联网中的第一个路由器之间的一种网络。<ul><li>从覆盖范围看，很多接入网还属于局域网</li><li>从作用上看，接入网只是起到让用户能够与互联网连接的“桥梁”作用。  <h2 id="计算机网络的性能"><a href="#计算机网络的性能" class="headerlink" title="计算机网络的性能"></a>计算机网络的性能</h2><h3 id="计算机网络的性能指标"><a href="#计算机网络的性能指标" class="headerlink" title="计算机网络的性能指标"></a>计算机网络的性能指标</h3></li></ul></li></ul></li><li>速率<ul><li>比特（bit）是计算机中数据量的单位，也是信息论中使用的信息量的单位。</li><li>Bit 来源于 binary digit，意思是一个“二进制数字”，因此一个比特就是二进制数字中的一个 1 或 0。</li><li>速率即数据率(data rate)或比特率(bit rate)是计算机网络中最重要的一个性能指标。速率的单位是 b/s，或kb/s, Mb/s, Gb/s 等</li><li>速率往往是指额定速率或标称速率，而并非网络实际上运行的速率。  </li></ul></li><li>带宽 <ul><li>“带宽”(bandwidth)本来是指信号具有的频带宽度，单位是赫（或千赫、兆赫、吉赫等）。<ul><li>因此，表示某信道允许通过的信号频带范围就称为该信道的带宽(或通频带)。 </li></ul></li><li>现在“带宽”是数字信道所能传送的“最高数据率”的同义语，单位是“比特每秒”，或 b/s (bit/s)。 </li></ul></li><li>上述两种表述中，前者为频域称谓，后者为时域称谓。 <ul><li>常用的带宽单位<ul><li>更常用的带宽单位是</li><li>千比每秒，即 kb/s （103 b/s）</li><li>兆比每秒，即 Mb/s（106 b/s）</li><li>吉比每秒，即 Gb/s（109 b/s）</li><li>太比每秒，即 Tb/s（1012 b/s）</li><li>请注意：在计算机界，K = 210 = 1024</li><li>M = 220, G = 230, T = 240。</li></ul></li><li>数字信号流随时间的变化<ul><li>在时间轴上信号的宽度随带宽的增大而变窄。</li></ul></li></ul></li><li>吞吐量<ul><li>吞吐量(throughput)表示在单位时间内通过某个网络（或信道、接口）的实际数据量。</li><li>吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道实际上到底有多少数据量能够通过网络。</li><li>吞吐量受网络的带宽或网络的额定速率的限制。  </li></ul></li><li>时延(delay 或 latency)——数据从网络的一段传到另一端所需要的时间 <ul><li>发送时延    主机或路由器发送数据帧所需要的时间。<ul><li>也就是从发送数据帧的第一个比特算起，到该帧的最后一个比特发送完毕所需的时间。 </li></ul></li><li>传播时延    电磁波在信道中需要传播一定的距离而花费的时间。 </li><li>信号的发送速率和信号在信道上的传播速率是完全不同的概念。 </li><li>处理时延    主机或路由器在收到分组时要花费一定的时间进行处理。 </li><li>排队时延    结点缓存队列中分组排队所经历的时延。<ul><li>排队时延的长短往往取决于网络中当时的通信量。</li></ul></li><li>数据经历的总时延就是发送时延、传播时延、处理时延和排队时延之和： </li></ul></li><li>时延带宽积<ul><li>链路的时延带宽积又称为以比特为单位的链路长度。 </li><li>时延带宽积 = 传播时延 * 带宽</li></ul></li><li>往返时间 RTT<ul><li>互联网上的信息不仅仅单方向传输而是双向交互的。因此，我们有时很需要知道双向交互一次所需的时间。 </li></ul></li><li>利用率<ul><li>信道利用率指出某信道有百分之几的时间是被利用的（有数据通过）。完全空闲的信道的利用率是零。</li><li>网络利用率则是全网络的信道利用率的加权平均值。</li><li>信道利用率并非越高越好。 (越高会产生非常大的时延)</li></ul></li><li>时延与网络利用率的关系<ul><li>根据排队论的理论，当某信道的利用率增大时，该信道引起的时延也就迅速增加。 <h3 id="计算机网络的非性能特征"><a href="#计算机网络的非性能特征" class="headerlink" title="计算机网络的非性能特征"></a>计算机网络的非性能特征</h3></li></ul></li><li>费用</li><li>质量</li><li>标准化</li><li>可靠性</li><li>可扩展性和可升级性 </li><li>易于管理和维护 <h2 id="计算机网络的体系结构"><a href="#计算机网络的体系结构" class="headerlink" title="计算机网络的体系结构"></a>计算机网络的体系结构</h2><h3 id="计算机网络体系结构的形成"><a href="#计算机网络体系结构的形成" class="headerlink" title="计算机网络体系结构的形成"></a>计算机网络体系结构的形成</h3></li><li>相互通信的两个计算机系统必须高度协调工作才行，而这种“协调”是相当复杂的。 </li><li>“分层”可将庞大而复杂的问题，转化为若干较小的局部问题，而这些较小的局部问题就比较易于研究和处理。<h3 id="关于开放系统互连参考模型OSI-RM"><a href="#关于开放系统互连参考模型OSI-RM" class="headerlink" title="关于开放系统互连参考模型OSI/RM"></a>关于开放系统互连参考模型OSI/RM</h3><h4 id="只要遵循-OSI-标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。"><a href="#只要遵循-OSI-标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。" class="headerlink" title="只要遵循 OSI 标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。"></a>只要遵循 OSI 标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。</h4><h4 id="在市场化方面-OSI-却失败了。"><a href="#在市场化方面-OSI-却失败了。" class="headerlink" title="在市场化方面 OSI 却失败了。"></a>在市场化方面 OSI 却失败了。</h4></li><li>OSI 的专家们在完成 OSI 标准时没有商业驱动力；</li><li>OSI 的协议实现起来过分复杂，且运行效率很低；</li><li>OSI 标准的制定周期太长，因而使得按 OSI 标准生产的设备无法及时进入市场；</li><li>OSI 的层次划分并也不太合理，有些功能在多个层次中重复出现。  <h3 id="协议与划分层次"><a href="#协议与划分层次" class="headerlink" title="协议与划分层次"></a>协议与划分层次</h3></li><li>划分层次的必要性<ul><li>计算机网络中的数据交换必须遵守事先约定好的规则。 </li><li>这些规则明确规定了所交换的数据的格式以及有关的同步问题（同步含有时序的意思）。</li><li>网络协议(network protocol)，简称为协议，是为进行网络中的数据交换而建立的规则、标准或约定。</li></ul></li><li>网络协议的组成要素<ul><li>语法     数据与控制信息的结构或格式 。 </li><li>语义     需要发出何种控制信息，完成何种动作以及做出何种响应。 </li><li>同步    事件实现顺序的详细说明。</li></ul></li><li>分层的好处 <ul><li>各层之间是独立的。</li><li>灵活性好。</li><li>结构上可分割开。</li><li>易于实现和维护。</li><li>能促进标准化工作。  <h3 id="具有五层协议的体系结构"><a href="#具有五层协议的体系结构" class="headerlink" title="具有五层协议的体系结构"></a>具有五层协议的体系结构</h3></li></ul></li><li>TCP/IP 是四层的体系结构：应用层、运输层、网际层和网络接口层。</li><li>但最下面的网络接口层并没有具体内容。</li><li>因此往往采取折中的办法，即综合 OSI 和 TCP/IP 的优点，采用一种只有五层协议的体系结构 。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120159604-1904552649.png" alt=""></li></ul><ul><li>应用层</li><li>运输层</li><li>网络层</li><li>数据链路层</li><li>物理层<pre><code>P31</code></pre><h3 id="实体、协议、服务和服务访问点"><a href="#实体、协议、服务和服务访问点" class="headerlink" title="实体、协议、服务和服务访问点"></a>实体、协议、服务和服务访问点</h3></li><li>实体(entity) 表示任何可发送或接收信息的硬件或软件进程。 </li><li>协议是控制两个对等实体进行通信的规则的集合。 </li><li>在协议的控制下，两个对等实体间的通信使得本层能够向上一层提供服务。</li><li>要实现本层协议，还需要使用下层所提供的服务。 </li><li>本层的服务用户只能看见服务而无法看见下面的协议。</li><li>下面的协议对上面的服务用户是透明的。 </li><li>协议是“水平的”，即协议是控制对等实体之间通信的规则。</li><li>服务是“垂直的”，即服务是由下层向上层通过层间接口提供的。</li><li>同一系统相邻两层的实体进行交互的地方，称为服务访问点 SAP (Service Access Point)。 </li><li>协议必须把所有不利的条件事先都估计到，而不能假定一切都是正常的和非常理想的。 </li><li>看一个计算机网络协议是否正确，不能光看在正常情况下是否正确，而且还必须非常仔细地检查这个协议能否应付各种异常情况。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120248118-746573391.png" alt=""></li></ul><h2 id="TCP-IP的体系结构"><a href="#TCP-IP的体系结构" class="headerlink" title="TCP/IP的体系结构"></a>TCP/IP的体系结构</h2><p><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120310435-1463424438.png" alt=""></p><ul><li>实际上现在的互联网使用的TCP/IP体系结构有时已经演变成为下图<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120346515-1879970849.png" alt=""></li></ul><ul><li><p>还有一种是是：<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120325738-1943815709.png" alt=""></p></li><li><p>这种像沙漏计时器形状的TCP/IP协议族表明：TCP/IP协议可以为各式各样的应用提供服务，同时TCP/IP协议也允许IP协议在各式各样的网络构成的互联网上运行。</p><pre><code>P35</code></pre><h2 id="Internet-和-internet-的区别"><a href="#Internet-和-internet-的区别" class="headerlink" title="Internet 和 internet 的区别"></a>Internet 和 internet 的区别</h2></li><li><p>以小写字母 i 开始的 internet（互联网或互连网）是一个通用名词，它泛指由多个计算机网络互连而成的网络。 </p></li><li><p>以大写字母I开始的的 Internet（互联网）则是一个专用名词，它指当前全球最大的、开放的、由众多网络相互连接而成的特定计算机网络，它采用 TCP/IP 协议族作为通信的规则，且其前身是美国的 ARPANET。</p><h2 id="万维网-WWW-的问世"><a href="#万维网-WWW-的问世" class="headerlink" title="万维网 WWW 的问世"></a>万维网 WWW 的问世</h2></li><li><p>互联网已经成为世界上规模最大和增长速率最快的计算机网络，没有人能够准确说出互联网究竟有多大。</p></li><li><p>互联网的迅猛发展始于 20 世纪 90 年代。由欧洲原子核研究组织 CERN 开发的万维网 WWW (World Wide Web)被广泛使用在互联网上，大大方便了广大非网络专业人员对网络的使用，成为互联网的这种指数级增长的主要驱动力。 </p><h2 id="客户软件的特点"><a href="#客户软件的特点" class="headerlink" title="客户软件的特点"></a>客户软件的特点</h2></li><li><p>被用户调用后运行，在打算通信时主动向远地服务器发起通信（请求服务）。因此，客户程序必须知道服务器程序的地址。</p></li><li><p>不需要特殊的硬件和很复杂的操作系统。 </p><h2 id="服务器软件的特点"><a href="#服务器软件的特点" class="headerlink" title="服务器软件的特点"></a>服务器软件的特点</h2></li><li><p>一种专门用来提供某种服务的程序，可同时处理多个远地或本地客户的请求。</p></li><li><p>系统启动后即自动调用并一直不断地运行着，被动地等待并接受来自各地的客户的通信请求。因此，服务器程序不需要知道客户程序的地址。</p></li><li><p>一般需要强大的硬件和高级的操作系统支持。</p><h2 id="两种通信方式"><a href="#两种通信方式" class="headerlink" title="两种通信方式"></a>两种通信方式</h2><h3 id="客户服务器方式（C-S-方式）-即Client-Server方式"><a href="#客户服务器方式（C-S-方式）-即Client-Server方式" class="headerlink" title="客户服务器方式（C/S 方式）   即Client/Server方式"></a>客户服务器方式（C/S 方式）   即Client/Server方式</h3></li><li><p>客户(client)和服务器(server)都是指通信中所涉及的两个应用进程。</p></li><li><p>客户服务器方式所描述的是进程之间服务和被服务的关系。</p></li><li><p>客户是服务的请求方，服务器是服务的提供方。</p><h3 id="对等方式（P2P-方式）-即-Peer-to-Peer方式"><a href="#对等方式（P2P-方式）-即-Peer-to-Peer方式" class="headerlink" title="对等方式（P2P 方式）   即 Peer-to-Peer方式"></a>对等方式（P2P 方式）   即 Peer-to-Peer方式</h3></li><li><p>对等连接(peer-to-peer，简写为 P2P)是指两个主机在通信时并不区分哪一个是服务请求方还是服务提供方。</p></li><li><p>只要两个主机都运行了对等连接软件（P2P 软件），它们就可以进行平等的、对等连接通信。</p></li><li><p>双方都可以下载对方已经存储在硬盘中的共享文档。 </p></li><li><p>对等连接方式的特点</p><ul><li>对等连接方式从本质上看仍然是使用客户服务器方式，只是对等连接中的每一个主机既是客户又同时是服务器。</li><li>例如主机 C 请求 D 的服务时，C 是客户，D 是服务器。但如果 C 又同时向 F提供服务，那么 C 又同时起着服务器的作用。</li></ul></li></ul>]]></content>
-      
-      
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络(第七版)谢希仁-第1章 概述</title>
+    <url>/2020/06/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC1%E7%AB%A0%20%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h1 id="第-1-章-概述"><a href="#第-1-章-概述" class="headerlink" title="第 1 章   概述"></a>第 1 章   概述</h1><h2 id="计算机网络在信息时代中的作用"><a href="#计算机网络在信息时代中的作用" class="headerlink" title="计算机网络在信息时代中的作用"></a>计算机网络在信息时代中的作用</h2><ul>
+<li>21 世纪的一些重要特征就是数字化、网络化和信息化，它是一个以网络为核心的信息时代。</li>
+<li>网络是指“三网”，即电信网络、有线电视网络和计算机网络。</li>
+<li>发展最快的并起到核心作用的是计算机网络。<a id="more"></a><h3 id="互联网-Internet-的发展"><a href="#互联网-Internet-的发展" class="headerlink" title="互联网(Internet)的发展"></a>互联网(Internet)的发展</h3></li>
+<li>进入 20 世纪 90 年代以后，以互联网为代表的计算机网络得到了飞速的发展。</li>
+<li>已从最初的教育科研网络逐步发展成为商业网络。</li>
+<li>已成为仅次于全球电话网的世界第二大网络。 <h3 id="互联网的意义"><a href="#互联网的意义" class="headerlink" title="互联网的意义"></a>互联网的意义</h3></li>
+<li>互联网是自印刷术以来人类通信方面最大的变革。</li>
+<li>现在人们的生活、工作、学习和交往都已离不开互联网。 </li>
+<li>互联网已经成为世界上最大的计算机网络。<h2 id="互联网概述"><a href="#互联网概述" class="headerlink" title="互联网概述"></a>互联网概述</h2><h3 id="网络的网络"><a href="#网络的网络" class="headerlink" title="网络的网络"></a>网络的网络</h3></li>
+<li>起源于美国的互联网现已发展成为世界上最大的国际性计算机互联网 </li>
+<li>网络(network)(计算机网络)由若干结点(node)和连接这些结点的链路(link)组成。 </li>
+<li>互连网是“网络的网络”(network of networks)。(网络之间可以通过路由器互连起来，构成覆盖范围更大的计算机网络) </li>
+<li>与网络相连的计算机都称为主机(host)。 </li>
+<li>网络与互连网<ul>
+<li>网络把许多计算机连接在一起。</li>
+<li>互连网把许多网络通过路由器连接在一起。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625115948651-2125443533.png" alt=""><br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120026231-157423551.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="互联网发展的三个阶段"><a href="#互联网发展的三个阶段" class="headerlink" title="互联网发展的三个阶段"></a>互联网发展的三个阶段</h3><ul>
+<li>第一阶段是从单个网络 ARPANET 向互连网发展的过程。<ul>
+<li>1969年美国国防部创建第一个分组交换网ARPANET。最初只是一个单个的分组交换网。</li>
+<li>1983 年 TCP/IP 协议成为 ARPANET 上的标准协议。</li>
+<li>人们把 1983 年作为互联网的诞生时间。</li>
+<li>1990年ARPANET正式宣布关闭。</li>
+</ul>
+</li>
+<li>第二阶段的特点是建成了三级结构的互联网。<ul>
+<li>三级计算机网络，分为主干网、地区网和校园网（或企业网）。 </li>
+</ul>
+</li>
+<li>第三阶段的特点是逐渐形成了多层次 ISP 结构的互联网。<ul>
+<li>出现了互联网服务提供者 ISP (Internet Service Provider)。  </li>
+<li>根据提供服务的覆盖面积大小以及所拥有的IP 地址数目的不同，ISP 也分成为不同的层次。</li>
+<li>中国电信、中国联通和中国移动都是我国最有名的ISP。</li>
+<li>根据提欧共服务的覆盖面积大小以所拥有的IP地址数目不同，ISP分为：主干ISP、地区ISP、本地ISP。</li>
+<li>互联网交换点IXP的主要作用就是允许两个网络直接相连并交换分组，而不需要通过第三个网络来转发分组。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120127222-1211275374.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="互联网的标准化工作"><a href="#互联网的标准化工作" class="headerlink" title="互联网的标准化工作"></a>互联网的标准化工作</h3><ul>
+<li>制订互联网的正式标准要经过以下的三个阶段 <ul>
+<li>互联网草案(Internet Draft) ——在这个阶段还不是 RFC 文档。</li>
+<li>建议标准(Proposed Standard) ——从这个阶段开始就成为 RFC 文档。</li>
+<li>互联网标准(Internet Standard) ——达到标准后分贝一个编号STD xx。</li>
+</ul>
+</li>
+<li>各种RFC之间的关系<h2 id="互联网的组成"><a href="#互联网的组成" class="headerlink" title="互联网的组成"></a>互联网的组成</h2><h3 id="互联网的边缘部分"><a href="#互联网的边缘部分" class="headerlink" title="互联网的边缘部分"></a>互联网的边缘部分</h3></li>
+<li>由所有连接在互联网上的主机组成。这部分是用户直接使用的，用来进行通信（传送数据、音频或视频）和资源共享。<ul>
+<li>处在互联网边缘的部分就是连接在互联网上的所有的主机。这些主机又称为端系统(end system)。</li>
+<li>“主机 A 和主机 B 进行通信”，实际上是指：“运行在主机 A 上的某个程序和运行在主机 B 上的另一个程序进行通信”。</li>
+<li>即“主机 A 的某个进程和主机 B 上的另一个进程进行通信”。或简称为“计算机之间通信” </li>
+</ul>
+</li>
+<li>边缘的端系统之间的通信方式通常分为两大类：客户-服务器方式(C/S)和对等方式(P2P)。( P11)<h3 id="互联网的核心部分"><a href="#互联网的核心部分" class="headerlink" title="互联网的核心部分"></a>互联网的核心部分</h3></li>
+<li>由大量网络和连接这些网络的路由器组成。这部分是为边缘部分提供服务的（提供连通性和交换）<ul>
+<li>网络核心部分是互联网中最复杂的部分。</li>
+<li>网络中的核心部分要向网络边缘中的大量主机提供连通性，使边缘部分中的任何一个主机都能够向其他主机通信（即传送或接收各种形式的数据）。</li>
+<li>在网络核心部分起特殊作用的是路由器(router)。(电路交换、分组交换和报文交换特点 P13)<ul>
+<li>路由器是实现分组交换(packet switching)的关键构件，其任务是转发收到的分组，这是网络核心部分最重要的功能。<ul>
+<li>在路由器中的输入和输出端口之间没有直接连线。</li>
+<li>路由器处理分组的过程是：<ul>
+<li>把收到的分组先放入缓存（暂时存储）；</li>
+<li>查找转发表，找出到某个目的地址应从哪个端口转发；</li>
+<li>把分组送到适当的端口转发出去。 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>路由器是实现分组交换(packet switching)的关键构件，其任务是转发收到的分组，这是网络核心部分最重要的功能。<br><img src="/images/jsjwlbybf.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="计算机网络在我国的发展"><a href="#计算机网络在我国的发展" class="headerlink" title="计算机网络在我国的发展"></a>计算机网络在我国的发展</h2><ul>
+<li>(1) 中国公用计算机互联网 CHINANET</li>
+<li>(2) 中国教育和科研计算机网 CERNET</li>
+<li>(3) 中国科学技术网 CSTNET</li>
+<li>(4) 中国联通互联网 UNINET</li>
+<li>(5) 中国网通公用互联网 CNCNET</li>
+<li>(6) 中国国际经济贸易互联网 CIETNET</li>
+<li>(7) 中国移动互联网 CMNET</li>
+<li>(8) 中国长城互联网 CGWNET（建设中）</li>
+<li>(9) 中国卫星集团互联网 CSNET（建设中） <h2 id="计算机网络的类别"><a href="#计算机网络的类别" class="headerlink" title="计算机网络的类别"></a>计算机网络的类别</h2><h3 id="计算机网络的定义"><a href="#计算机网络的定义" class="headerlink" title="计算机网络的定义"></a>计算机网络的定义</h3></li>
+<li>较好的定义：计算机网络是由一些通用的、可编程的硬件互连而成的，而这些硬件并非专门用来实现某一特定目的。</li>
+<li>互联网(Internet)是“网络的网络”。<h3 id="几种不同类别的网络"><a href="#几种不同类别的网络" class="headerlink" title="几种不同类别的网络"></a>几种不同类别的网络</h3></li>
+<li>不同作用范围的网络 <ul>
+<li>广域网 WAN (Wide Area Network)</li>
+<li>局域网 LAN (Local Area Network) </li>
+<li>城域网 MAN (Metropolitan Area Network)</li>
+<li>个人区域网 PAN (Personal Area Network) </li>
+</ul>
+</li>
+<li>按照网络的使用者进行分类 <ul>
+<li>公用网 (public network) </li>
+<li>专用网 (private network) </li>
+</ul>
+</li>
+<li>用来吧用户接入到互联网的网络<ul>
+<li>这种网络称为 接入网AN(Access Network)，又称为本地接入网或居民接入网。</li>
+<li>接入网是从某个用户端系统到互联网中的第一个路由器之间的一种网络。<ul>
+<li>从覆盖范围看，很多接入网还属于局域网</li>
+<li>从作用上看，接入网只是起到让用户能够与互联网连接的“桥梁”作用。  <h2 id="计算机网络的性能"><a href="#计算机网络的性能" class="headerlink" title="计算机网络的性能"></a>计算机网络的性能</h2><h3 id="计算机网络的性能指标"><a href="#计算机网络的性能指标" class="headerlink" title="计算机网络的性能指标"></a>计算机网络的性能指标</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>速率<ul>
+<li>比特（bit）是计算机中数据量的单位，也是信息论中使用的信息量的单位。</li>
+<li>Bit 来源于 binary digit，意思是一个“二进制数字”，因此一个比特就是二进制数字中的一个 1 或 0。</li>
+<li>速率即数据率(data rate)或比特率(bit rate)是计算机网络中最重要的一个性能指标。速率的单位是 b/s，或kb/s, Mb/s, Gb/s 等</li>
+<li>速率往往是指额定速率或标称速率，而并非网络实际上运行的速率。  </li>
+</ul>
+</li>
+<li>带宽 <ul>
+<li>“带宽”(bandwidth)本来是指信号具有的频带宽度，单位是赫（或千赫、兆赫、吉赫等）。<ul>
+<li>因此，表示某信道允许通过的信号频带范围就称为该信道的带宽(或通频带)。 </li>
+</ul>
+</li>
+<li>现在“带宽”是数字信道所能传送的“最高数据率”的同义语，单位是“比特每秒”，或 b/s (bit/s)。 </li>
+</ul>
+</li>
+<li>上述两种表述中，前者为频域称谓，后者为时域称谓。 <ul>
+<li>常用的带宽单位<ul>
+<li>更常用的带宽单位是</li>
+<li>千比每秒，即 kb/s （103 b/s）</li>
+<li>兆比每秒，即 Mb/s（106 b/s）</li>
+<li>吉比每秒，即 Gb/s（109 b/s）</li>
+<li>太比每秒，即 Tb/s（1012 b/s）</li>
+<li>请注意：在计算机界，K = 210 = 1024</li>
+<li>M = 220, G = 230, T = 240。</li>
+</ul>
+</li>
+<li>数字信号流随时间的变化<ul>
+<li>在时间轴上信号的宽度随带宽的增大而变窄。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>吞吐量<ul>
+<li>吞吐量(throughput)表示在单位时间内通过某个网络（或信道、接口）的实际数据量。</li>
+<li>吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道实际上到底有多少数据量能够通过网络。</li>
+<li>吞吐量受网络的带宽或网络的额定速率的限制。  </li>
+</ul>
+</li>
+<li>时延(delay 或 latency)——数据从网络的一段传到另一端所需要的时间 <ul>
+<li>发送时延    主机或路由器发送数据帧所需要的时间。<ul>
+<li>也就是从发送数据帧的第一个比特算起，到该帧的最后一个比特发送完毕所需的时间。 </li>
+</ul>
+</li>
+<li>传播时延    电磁波在信道中需要传播一定的距离而花费的时间。 </li>
+<li>信号的发送速率和信号在信道上的传播速率是完全不同的概念。 </li>
+<li>处理时延    主机或路由器在收到分组时要花费一定的时间进行处理。 </li>
+<li>排队时延    结点缓存队列中分组排队所经历的时延。<ul>
+<li>排队时延的长短往往取决于网络中当时的通信量。</li>
+</ul>
+</li>
+<li>数据经历的总时延就是发送时延、传播时延、处理时延和排队时延之和： </li>
+</ul>
+</li>
+<li>时延带宽积<ul>
+<li>链路的时延带宽积又称为以比特为单位的链路长度。 </li>
+<li>时延带宽积 = 传播时延 * 带宽</li>
+</ul>
+</li>
+<li>往返时间 RTT<ul>
+<li>互联网上的信息不仅仅单方向传输而是双向交互的。因此，我们有时很需要知道双向交互一次所需的时间。 </li>
+</ul>
+</li>
+<li>利用率<ul>
+<li>信道利用率指出某信道有百分之几的时间是被利用的（有数据通过）。完全空闲的信道的利用率是零。</li>
+<li>网络利用率则是全网络的信道利用率的加权平均值。</li>
+<li>信道利用率并非越高越好。 (越高会产生非常大的时延)</li>
+</ul>
+</li>
+<li>时延与网络利用率的关系<ul>
+<li>根据排队论的理论，当某信道的利用率增大时，该信道引起的时延也就迅速增加。 <h3 id="计算机网络的非性能特征"><a href="#计算机网络的非性能特征" class="headerlink" title="计算机网络的非性能特征"></a>计算机网络的非性能特征</h3></li>
+</ul>
+</li>
+<li>费用</li>
+<li>质量</li>
+<li>标准化</li>
+<li>可靠性</li>
+<li>可扩展性和可升级性 </li>
+<li>易于管理和维护 <h2 id="计算机网络的体系结构"><a href="#计算机网络的体系结构" class="headerlink" title="计算机网络的体系结构"></a>计算机网络的体系结构</h2><h3 id="计算机网络体系结构的形成"><a href="#计算机网络体系结构的形成" class="headerlink" title="计算机网络体系结构的形成"></a>计算机网络体系结构的形成</h3></li>
+<li>相互通信的两个计算机系统必须高度协调工作才行，而这种“协调”是相当复杂的。 </li>
+<li>“分层”可将庞大而复杂的问题，转化为若干较小的局部问题，而这些较小的局部问题就比较易于研究和处理。<h3 id="关于开放系统互连参考模型OSI-RM"><a href="#关于开放系统互连参考模型OSI-RM" class="headerlink" title="关于开放系统互连参考模型OSI/RM"></a>关于开放系统互连参考模型OSI/RM</h3><h4 id="只要遵循-OSI-标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。"><a href="#只要遵循-OSI-标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。" class="headerlink" title="只要遵循 OSI 标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。"></a>只要遵循 OSI 标准，一个系统就可以和位于世界上任何地方的、也遵循这同一标准的其他任何系统进行通信。</h4><h4 id="在市场化方面-OSI-却失败了。"><a href="#在市场化方面-OSI-却失败了。" class="headerlink" title="在市场化方面 OSI 却失败了。"></a>在市场化方面 OSI 却失败了。</h4></li>
+<li>OSI 的专家们在完成 OSI 标准时没有商业驱动力；</li>
+<li>OSI 的协议实现起来过分复杂，且运行效率很低；</li>
+<li>OSI 标准的制定周期太长，因而使得按 OSI 标准生产的设备无法及时进入市场；</li>
+<li>OSI 的层次划分并也不太合理，有些功能在多个层次中重复出现。  <h3 id="协议与划分层次"><a href="#协议与划分层次" class="headerlink" title="协议与划分层次"></a>协议与划分层次</h3></li>
+<li>划分层次的必要性<ul>
+<li>计算机网络中的数据交换必须遵守事先约定好的规则。 </li>
+<li>这些规则明确规定了所交换的数据的格式以及有关的同步问题（同步含有时序的意思）。</li>
+<li>网络协议(network protocol)，简称为协议，是为进行网络中的数据交换而建立的规则、标准或约定。</li>
+</ul>
+</li>
+<li>网络协议的组成要素<ul>
+<li>语法     数据与控制信息的结构或格式 。 </li>
+<li>语义     需要发出何种控制信息，完成何种动作以及做出何种响应。 </li>
+<li>同步    事件实现顺序的详细说明。</li>
+</ul>
+</li>
+<li>分层的好处 <ul>
+<li>各层之间是独立的。</li>
+<li>灵活性好。</li>
+<li>结构上可分割开。</li>
+<li>易于实现和维护。</li>
+<li>能促进标准化工作。  <h3 id="具有五层协议的体系结构"><a href="#具有五层协议的体系结构" class="headerlink" title="具有五层协议的体系结构"></a>具有五层协议的体系结构</h3></li>
+</ul>
+</li>
+<li>TCP/IP 是四层的体系结构：应用层、运输层、网际层和网络接口层。</li>
+<li>但最下面的网络接口层并没有具体内容。</li>
+<li>因此往往采取折中的办法，即综合 OSI 和 TCP/IP 的优点，采用一种只有五层协议的体系结构 。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120159604-1904552649.png" alt=""></li>
+</ul>
+<ul>
+<li>应用层</li>
+<li>运输层</li>
+<li>网络层</li>
+<li>数据链路层</li>
+<li>物理层<pre><code>P31</code></pre><h3 id="实体、协议、服务和服务访问点"><a href="#实体、协议、服务和服务访问点" class="headerlink" title="实体、协议、服务和服务访问点"></a>实体、协议、服务和服务访问点</h3></li>
+<li>实体(entity) 表示任何可发送或接收信息的硬件或软件进程。 </li>
+<li>协议是控制两个对等实体进行通信的规则的集合。 </li>
+<li>在协议的控制下，两个对等实体间的通信使得本层能够向上一层提供服务。</li>
+<li>要实现本层协议，还需要使用下层所提供的服务。 </li>
+<li>本层的服务用户只能看见服务而无法看见下面的协议。</li>
+<li>下面的协议对上面的服务用户是透明的。 </li>
+<li>协议是“水平的”，即协议是控制对等实体之间通信的规则。</li>
+<li>服务是“垂直的”，即服务是由下层向上层通过层间接口提供的。</li>
+<li>同一系统相邻两层的实体进行交互的地方，称为服务访问点 SAP (Service Access Point)。 </li>
+<li>协议必须把所有不利的条件事先都估计到，而不能假定一切都是正常的和非常理想的。 </li>
+<li>看一个计算机网络协议是否正确，不能光看在正常情况下是否正确，而且还必须非常仔细地检查这个协议能否应付各种异常情况。<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120248118-746573391.png" alt=""></li>
+</ul>
+<h2 id="TCP-IP的体系结构"><a href="#TCP-IP的体系结构" class="headerlink" title="TCP/IP的体系结构"></a>TCP/IP的体系结构</h2><p><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120310435-1463424438.png" alt=""></p>
+<ul>
+<li>实际上现在的互联网使用的TCP/IP体系结构有时已经演变成为下图<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120346515-1879970849.png" alt=""></li>
+</ul>
+<ul>
+<li><p>还有一种是是：<br><img src="https://img2020.cnblogs.com/blog/1878513/202006/1878513-20200625120325738-1943815709.png" alt=""></p>
+</li>
+<li><p>这种像沙漏计时器形状的TCP/IP协议族表明：TCP/IP协议可以为各式各样的应用提供服务，同时TCP/IP协议也允许IP协议在各式各样的网络构成的互联网上运行。</p>
+<pre><code>P35</code></pre><h2 id="Internet-和-internet-的区别"><a href="#Internet-和-internet-的区别" class="headerlink" title="Internet 和 internet 的区别"></a>Internet 和 internet 的区别</h2></li>
+<li><p>以小写字母 i 开始的 internet（互联网或互连网）是一个通用名词，它泛指由多个计算机网络互连而成的网络。 </p>
+</li>
+<li><p>以大写字母I开始的的 Internet（互联网）则是一个专用名词，它指当前全球最大的、开放的、由众多网络相互连接而成的特定计算机网络，它采用 TCP/IP 协议族作为通信的规则，且其前身是美国的 ARPANET。</p>
+<h2 id="万维网-WWW-的问世"><a href="#万维网-WWW-的问世" class="headerlink" title="万维网 WWW 的问世"></a>万维网 WWW 的问世</h2></li>
+<li><p>互联网已经成为世界上规模最大和增长速率最快的计算机网络，没有人能够准确说出互联网究竟有多大。</p>
+</li>
+<li><p>互联网的迅猛发展始于 20 世纪 90 年代。由欧洲原子核研究组织 CERN 开发的万维网 WWW (World Wide Web)被广泛使用在互联网上，大大方便了广大非网络专业人员对网络的使用，成为互联网的这种指数级增长的主要驱动力。 </p>
+<h2 id="客户软件的特点"><a href="#客户软件的特点" class="headerlink" title="客户软件的特点"></a>客户软件的特点</h2></li>
+<li><p>被用户调用后运行，在打算通信时主动向远地服务器发起通信（请求服务）。因此，客户程序必须知道服务器程序的地址。</p>
+</li>
+<li><p>不需要特殊的硬件和很复杂的操作系统。 </p>
+<h2 id="服务器软件的特点"><a href="#服务器软件的特点" class="headerlink" title="服务器软件的特点"></a>服务器软件的特点</h2></li>
+<li><p>一种专门用来提供某种服务的程序，可同时处理多个远地或本地客户的请求。</p>
+</li>
+<li><p>系统启动后即自动调用并一直不断地运行着，被动地等待并接受来自各地的客户的通信请求。因此，服务器程序不需要知道客户程序的地址。</p>
+</li>
+<li><p>一般需要强大的硬件和高级的操作系统支持。</p>
+<h2 id="两种通信方式"><a href="#两种通信方式" class="headerlink" title="两种通信方式"></a>两种通信方式</h2><h3 id="客户服务器方式（C-S-方式）-即Client-Server方式"><a href="#客户服务器方式（C-S-方式）-即Client-Server方式" class="headerlink" title="客户服务器方式（C/S 方式）   即Client/Server方式"></a>客户服务器方式（C/S 方式）   即Client/Server方式</h3></li>
+<li><p>客户(client)和服务器(server)都是指通信中所涉及的两个应用进程。</p>
+</li>
+<li><p>客户服务器方式所描述的是进程之间服务和被服务的关系。</p>
+</li>
+<li><p>客户是服务的请求方，服务器是服务的提供方。</p>
+<h3 id="对等方式（P2P-方式）-即-Peer-to-Peer方式"><a href="#对等方式（P2P-方式）-即-Peer-to-Peer方式" class="headerlink" title="对等方式（P2P 方式）   即 Peer-to-Peer方式"></a>对等方式（P2P 方式）   即 Peer-to-Peer方式</h3></li>
+<li><p>对等连接(peer-to-peer，简写为 P2P)是指两个主机在通信时并不区分哪一个是服务请求方还是服务提供方。</p>
+</li>
+<li><p>只要两个主机都运行了对等连接软件（P2P 软件），它们就可以进行平等的、对等连接通信。</p>
+</li>
+<li><p>双方都可以下载对方已经存储在硬盘中的共享文档。 </p>
+</li>
+<li><p>对等连接方式的特点</p>
+<ul>
+<li>对等连接方式从本质上看仍然是使用客户服务器方式，只是对等连接中的每一个主机既是客户又同时是服务器。</li>
+<li>例如主机 C 请求 D 的服务时，C 是客户，D 是服务器。但如果 C 又同时向 F提供服务，那么 C 又同时起着服务器的作用。</li>
+</ul>
+</li>
+</ul>
+]]></content>
       <categories>
-          
-          <category> 笔记 </category>
-          
+        <category>笔记</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 计算机网络 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Linux基础命令</title>
-      <link href="/2020/05/16/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"/>
-      <url>/2020/05/16/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</url>
-      
-        <content type="html"><![CDATA[<p><img src="/images/linux.png" alt="overwrote existing file"></p><a id="more"></a><h1 id="目录操作命令"><a href="#目录操作命令" class="headerlink" title="目录操作命令"></a>目录操作命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">用途：</span><br><span class="line">    用来对文件进行操作</span><br><span class="line">    </span><br><span class="line">英文原意：list</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]<span class="comment">#ls [选项][文件名或目录名]</span></span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">    -a:显示所有文件</span><br><span class="line">    -A:列出除.及..的其他文件</span><br><span class="line">    -d：显示目录信息，而不是目录下的文件//ls -ld [目录] 显示目录本身详细信息</span><br><span class="line">    -l:长格式显示                        //ls -l [目录]显示目录下的内容</span><br><span class="line">    //ls -l+(h=按照习惯单位显示文件大小(k))</span><br><span class="line">    -t:以文件的大小排序</span><br><span class="line">    -S:以文件的大小排序</span><br><span class="line">    -i:显示文件的i节点号</span><br><span class="line">    -h:以易读的方式显示</span><br></pre></td></tr></table></figure><h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">英文原意:change directory</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    对目录的切换</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#cd [目录名]</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    cd+回车:进入家目录</span><br><span class="line">    cd ~:进入家目录</span><br><span class="line">    cd &#x2F;+要进入的目录</span><br><span class="line">    cd -:进入上一次工作路径</span><br><span class="line">    cd .. :入上级目录</span><br><span class="line">    cd .  :进入当前目录</span><br><span class="line">    pwd:查看当前所在目录,可以看到路径</span><br><span class="line"></span><br><span class="line">cd的相对路径和绝对路径的使用:</span><br><span class="line"></span><br><span class="line">    cd &#x2F;usr&#x2F;local&#x2F;src  绝对路径的使用</span><br><span class="line">    </span><br><span class="line">    cd &#x2F;usr进入第一层目录以后</span><br><span class="line">    相对路径的进入是指进入当前目录下的文件</span><br><span class="line">    命令: xxx&#x2F;  注意反斜杠的位置在后面</span><br></pre></td></tr></table></figure><h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">英文原意：make directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    创建空目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#mkdir [选项] 目录名</span><br><span class="line"></span><br><span class="line">    -p:递归建立所需目录</span><br><span class="line">常见用法：</span><br><span class="line">    mkdir 文件名:创建文件且创建到当前目录</span><br><span class="line">    mkdir -p lm&#x2F;movie&#x2F;jp&#x2F;cangls :递归创建一系列文件</span><br></pre></td></tr></table></figure><h2 id="rmdir命令"><a href="#rmdir命令" class="headerlink" title="rmdir命令"></a>rmdir命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">英文原意：remove empty directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    删除空目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]# rmdir [选项] 目录名</span><br><span class="line"></span><br><span class="line">    -p:递归删除目录</span><br><span class="line">常见用法：</span><br><span class="line">    rmdir 文件名:删除该文件</span><br><span class="line">    rmdir -p lm&#x2F;movie&#x2F;jp&#x2F;cangls :递归删除一系列文件</span><br><span class="line">    </span><br><span class="line">rmidr命令比较笨一般不使用，不论删除的文件还是目录以后都会使用rm命令</span><br></pre></td></tr></table></figure><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">英文原意：list contents of directories in a tree-like format</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    显示目录树</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tree</span><br><span class="line"></span><br><span class="line">    tree &#x2F;etc&#x2F;:显示etc文件的目录树</span><br></pre></td></tr></table></figure><h1 id="文件操作命令"><a href="#文件操作命令" class="headerlink" title="文件操作命令"></a>文件操作命令</h1><h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">英文原意：change file timestamps</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    文件不存在创建文件,文件存在修改</span><br><span class="line">    文件的时间（访问时间，数据修改时间，状态修改时间）</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#touch [选项] 文件名或目录名</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    touch -a xx:只修改文件的访问时间(Access Time)</span><br><span class="line">    touch -c xx:如果文件不存在则建立新文件</span><br><span class="line">    touch -d xx:把文件的时间改为制定的时间</span><br><span class="line">    touch -m xx:只修改文件的数据修改时间</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">    1.在Linux中文件没有创建时间</span><br><span class="line">    2.可以通过stat命令查看文件的时间</span><br><span class="line">    3.在Linux中氛围访问时间，数据修改时间，状态修改时间</span><br></pre></td></tr></table></figure><h2 id="stat命令"><a href="#stat命令" class="headerlink" title="stat命令"></a>stat命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">英文原意：display file or file system status</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    查看文件详细信息的命令，而且可以看到文件的三个时间</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#stat [选项] 文件名或目录名</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    -f :查看文件所在的文件系统信息，而不是查看文件的信息</span><br><span class="line">    echo 内容 &gt; 文件名:向某个文件输入xxx内容(修改了时间的变化)</span><br><span class="line">    chown nobody 文件名：只修文件的状态时间</span><br></pre></td></tr></table></figure><h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">英文原意：concatenate files and print on the standard output</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    合并文件并打印输出到标准输出</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#cat [选项] 文件名</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">    -A:相当于-vET选项的整合，用于列出所有隐藏符号</span><br><span class="line">    -E:列出每行结尾的回车符￥</span><br><span class="line">    -n:显示行号</span><br><span class="line">    -T:把Tab键用^I显示出来</span><br><span class="line">    -v:列出特殊字符</span><br></pre></td></tr></table></figure><h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">英文原意：file perusal filter for crt viewin</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    当文件过大使用cat不能满足需要是,more是分屏显示文件的命令</span><br><span class="line"></span><br><span class="line">命令格式:</span><br><span class="line">[root@localhost ~]#more 文件名</span><br><span class="line"></span><br><span class="line">常用的交互命令：</span><br><span class="line">    空格键：向下翻页</span><br><span class="line">    b：向上翻页</span><br><span class="line">    回车键：向下滚动一行</span><br><span class="line">    &#x2F;字符串：搜索指定字符串</span><br><span class="line">    q：退出</span><br></pre></td></tr></table></figure><h2 id="less命令"><a href="#less命令" class="headerlink" title="less命令"></a>less命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">英文原意：opposite of more</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    more为分屏显示，less是分行显示命令</span><br><span class="line">    q退出，上下移动</span><br></pre></td></tr></table></figure><h2 id="head命令"><a href="#head命令" class="headerlink" title="head命令"></a>head命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">英文原意：output the first part of files</span><br><span class="line">    </span><br><span class="line">用途：</span><br><span class="line">        显示文件开头的命令，默认显示文件的开头10行内容</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#head [选项] 文件名</span><br><span class="line">选项：</span><br><span class="line">    -n 行数：从文件头开始，显示指定行数</span><br><span class="line">    -v ：显示文件名</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    head -n xx 文件名：显示xx行内容，默认10行</span><br><span class="line">    也可以直接 head -xx 文件名：-行数即可省略-n</span><br></pre></td></tr></table></figure><h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">英文原意：output the last part of files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    显示文件结尾的内容</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tial [选项] 文件名</span><br><span class="line">选项：</span><br><span class="line">    -n 行数：从文件结尾开始，显示指定行数</span><br><span class="line">    -f :监听文件的新增内容</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    tail -n 20 xxx</span><br><span class="line">    tail -f xxx：会监视文件的更新且光标不会跳出</span><br></pre></td></tr></table></figure><h2 id="ln命令"><a href="#ln命令" class="headerlink" title="ln命令"></a>ln命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">英文原意：make links between file</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    在文件之间建立链接</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#ln [选项] 源文件 目标文件</span><br><span class="line">选项：</span><br><span class="line">    -s：建立软链接文件。如果不加&quot;-s&quot;则建立硬链接文件</span><br><span class="line">    -f：强制。如果目标文件已经存在，则删除目标文件后再建立链接文件</span><br><span class="line">    </span><br><span class="line">注意：</span><br><span class="line">        1.软链接的源文件必须写成绝对路径</span><br></pre></td></tr></table></figure><h1 id="目录和文件都能操作的命令"><a href="#目录和文件都能操作的命令" class="headerlink" title="目录和文件都能操作的命令"></a>目录和文件都能操作的命令</h1><h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">英文原意：remove files or directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    删除文件或者删除目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#rm [选项] 文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -f: 强制删除((force)</span><br><span class="line">    -i：交互删除，在删除之前会询问用户</span><br><span class="line">    -r: 递归删除，可以删除目录(recursive)</span><br><span class="line">    默认 -i 文件名</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    rm -r 目录名：递归删除时候会分别进入各个目录然后询问是否删除</span><br><span class="line">    rm -rf 目录名: 强制删除</span><br></pre></td></tr></table></figure><h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">英文原意：copy files and directories</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    复制文件和目录</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#cp [选项] 源文件 目标文件</span><br><span class="line">选项：</span><br><span class="line">    -a：相当于-dpr选项的集合，这几个选项我们一一介绍</span><br><span class="line">    -d：如果源文件为软链接(对硬链接无效)。则复制出的目标文件也为软链接</span><br><span class="line">    -i：询问，如果目标文件已经存在，则会询问是否覆盖</span><br><span class="line">    -l：把目标文件建立为源文件的硬链接文件，而不是复制源文件</span><br><span class="line">    -s：把目标文件建立为源文件的链接文件，而不是复制源文件</span><br><span class="line">    -p：复制后目标文件保留源文件的属性(包括所有者、所属组、权限和实践)</span><br><span class="line">    -r：递归复制，用于复制目录</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    cp -i cangls &#x2F;tmp&#x2F;bols ：文件的改名复制(bols是改名复制)</span><br><span class="line">    cp -r good &#x2F;tmp&#x2F;xx ：目录的同名复制(xx为改名复制)</span><br><span class="line">    cp -d &#x2F;tmp&#x2F;links_good &#x2F;tmp&#x2F;links_goods ：软链接复制(对硬链接无效)</span><br><span class="line">    cp -p &#x2F;tmp&#x2F;good &#x2F;tmp&#x2F;goods ：保留源文件的属性(不会修改时间等源文件属性)</span><br></pre></td></tr></table></figure><h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">英文原意：move(rename) files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    用来移动或改名(剪切)</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#mv [选项 源文件 目标文件</span><br><span class="line">选项：</span><br><span class="line">    -f：强制覆盖，如果目标文件已经存在，则不询问，强制覆盖</span><br><span class="line">    -i：交互移动，如果目标文件已经存在，则询问用户是否覆盖(默认选项)</span><br><span class="line">    -n：如果目标文件已经存在，则不会覆盖移动，而且不询问用户</span><br><span class="line">    -v：显示详细信息</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    mv good &#x2F;tmp：移动文件或目录</span><br><span class="line">    mkdir movie</span><br><span class="line">    mv movie&#x2F; &#x2F;tmp：将movie目录移到&#x2F;tmp下(不需要像cp一样加入-r选项)</span><br><span class="line">    mv -vn bols cangls lmls &#x2F;tmp ：将前三个文件移动到tmp目录下 &#x2F;v用于显示详细过程</span><br><span class="line">    mv xxx yyy：把xxx改名为yyy</span><br></pre></td></tr></table></figure><h1 id="基本权限命令"><a href="#基本权限命令" class="headerlink" title="基本权限命令"></a>基本权限命令</h1><h2 id="chmod命令"><a href="#chmod命令" class="headerlink" title="chmod命令"></a>chmod命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">英文原意：change file mode bits</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    用来修改文件的权限模式</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#chmod [选项] 权限模式 文件名</span><br><span class="line">选项：</span><br><span class="line">    -R：递归设置权限，也就是给子目录中的所有文件设定权限</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    chmod x+y 文件名：给文件中x用户添加y权限</span><br><span class="line">    chmod x+y,x2+y2 文件名：给多个用户同时添加权限</span><br><span class="line">    chmod x-y,x2-y2文件名：给x用户减去某权限</span><br><span class="line">    chmod x&#x3D;rwx,y&#x3D;rw1,z&#x3D;rwx：给x,y,z用户设置设置rwx其中的权限(rwx这里写在一起为了方便)</span><br><span class="line">数字权限:</span><br><span class="line">    4：代表“r”权限</span><br><span class="line">    2：代表“w”权限</span><br><span class="line">    1：代表“x”权限</span><br><span class="line">    </span><br><span class="line">    chmod 755 文件名：给文件赋予755权限</span><br><span class="line">        解释：</span><br><span class="line">            第一个数字“7”代表给所有者的权限是“4+2+1”，也就是读、写、执行权限</span><br><span class="line">            第二个数字“5”代表给所属组的权限是“4+1”，也就是读、执行权限</span><br><span class="line">            第三个数字&quot;5&quot;代表给其他人的权限是同上</span><br></pre></td></tr></table></figure><h1 id="所有者和所属组命令"><a href="#所有者和所属组命令" class="headerlink" title="所有者和所属组命令"></a>所有者和所属组命令</h1><h2 id="chown命令"><a href="#chown命令" class="headerlink" title="chown命令"></a>chown命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">英文原意：change file owner and group</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    修改文件和目录的所有者所属组的命令</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#chown [选项] 所有者：所属组 文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -R：递归设置权限，也就是给子目录中的所有文件设置权限</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    chown user 文件名：将文件的&quot;所有者&quot;设置为user，这时user对这个文件具有了读、写权限</span><br><span class="line">    chown user:user good：“：”前是所有者后是所属组，也可以用&quot;.&quot;来代替</span><br></pre></td></tr></table></figure><h2 id="chgrp命令"><a href="#chgrp命令" class="headerlink" title="chgrp命令"></a>chgrp命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">英文原意：change group ownership</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    修改文件和目录的所属组</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]# chgrp 用户组 文件名</span><br><span class="line"></span><br><span class="line">    chgrp user test：将文件test的所属组设置为user用户组</span><br></pre></td></tr></table></figure><h2 id="umask命令"><a href="#umask命令" class="headerlink" title="umask命令"></a>umask命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">umask命令</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    查看默认权限</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#umask xx</span><br><span class="line"></span><br><span class="line">[root@localhost ~]#umask ：直接使用是用八进制数显示umask权限</span><br><span class="line">[root@localhost ~]#unmask -S：用字母表示文件和目录的初始权限</span><br></pre></td></tr></table></figure><h1 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h1><h2 id="man命令"><a href="#man命令" class="headerlink" title="man命令"></a>man命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">英文原意：format and display the on-line manual pages</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    显示联机帮助手册</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#man [选项] 命令</span><br><span class="line">选项：</span><br><span class="line">    -f：查看命令拥有哪个级别的帮助</span><br><span class="line">    -k：查看和命令相关的所有帮助</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    man 命令名称：查看命令的帮助</span><br><span class="line">    man -f 命令：查看命令的帮助级别</span><br><span class="line">    man -k useradd：会列出所有包含useradd字符串的命令(字符串还可以改成别的)</span><br><span class="line">    whatis命令和 man -f是一致的</span><br><span class="line">    apropos命令和man -k是一致的</span><br><span class="line">    whoami 查看当前用户</span><br><span class="line">    whereis xx 、whatis xx命令在哪里、命令是干什么的</span><br></pre></td></tr></table></figure><h3 id="快捷键："><a href="#快捷键：" class="headerlink" title="快捷键："></a>快捷键：</h3><p> <img src="https://img2020.cnblogs.com/blog/1878513/202004/1878513-20200419152039516-1223878247.png" alt="img"></p><h3 id="命令帮助级别："><a href="#命令帮助级别：" class="headerlink" title="命令帮助级别："></a>命令帮助级别：</h3><p><img src="https://img2020.cnblogs.com/blog/1878513/202004/1878513-20200419152203569-1276414414.png" alt="img"></p><h2 id="info命令"><a href="#info命令" class="headerlink" title="info命令"></a>info命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">info命令的帮助信息是一套完整的资料，每个单独命令的帮助信息只是这套完整资料中的某一个章节</span><br><span class="line">    info xxx</span><br></pre></td></tr></table></figure><h3 id="快捷键：-1"><a href="#快捷键：-1" class="headerlink" title="快捷键："></a>快捷键：</h3><p><img src="https://img2020.cnblogs.com/blog/1878513/202004/1878513-20200419152118785-1937084526.png" alt="img"></p><h2 id="help命令："><a href="#help命令：" class="headerlink" title="help命令："></a>help命令：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">help命令只能获取shell内置命令的帮助，但是在Linux中绝大多数命令是外部命令，所以help命令的作用非常有限</span><br><span class="line">而且内置命令可以使用man命令获取帮助</span><br></pre></td></tr></table></figure><h2 id="–help选项"><a href="#–help选项" class="headerlink" title="–help选项"></a>–help选项</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">绝大多数命令都可以使用&quot;--help&quot;选项来查看帮助</span><br><span class="line">    列如：ls --help</span><br></pre></td></tr></table></figure><h1 id="搜索命令"><a href="#搜索命令" class="headerlink" title="搜索命令"></a>搜索命令</h1><h2 id="whereis命令"><a href="#whereis命令" class="headerlink" title="whereis命令"></a>whereis命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">英文原意：locate the binary source,and manual page files for a command</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    不能搜索普通文件，只能(搜索系统命令)</span><br><span class="line">    查找二进制命令、源文件和帮助文档的命令</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#where [选项] 命令</span><br><span class="line">选项：</span><br><span class="line">    -b：只查找二进制命令</span><br><span class="line">    -m：只查找帮助文档</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    whereis ls：即可看到二进制命令的位置，也可以看到帮助文档的位置，但是无法查看普通文件</span><br><span class="line">    whereis -b ls：只查看二进制命令的位置</span><br><span class="line">    whereis -m ls：只查看帮助文档的位置</span><br></pre></td></tr></table></figure><h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">英文原意：shows the full path of(shell) commands</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    列出命令的所在路径和命令的别名(搜索系统命令的命令)</span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#which xx</span><br></pre></td></tr></table></figure><h2 id="locate命令"><a href="#locate命令" class="headerlink" title="locate命令"></a>locate命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">英文原意：find files by name</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    按照文件名来搜索文件</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#locate [选项] 文件名</span><br><span class="line">选项：</span><br><span class="line">    -i：忽略大小写</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    locate install.log：搜索文件名叫install.log的文件</span><br><span class="line">    locate mkdir：由于系统命令其实也是文件，所以也可以按照文件名来搜索系统命令</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">    1.locate命令不会直接搜索硬盘空间，而是搜索locate数据库，每当用户退出登录或重启系统是locate数据库才会更新，所以我们无法查找到新建立文件</span><br><span class="line">    2.如果不想退出登录或重启系统，则可以通过updatedb命令手工更新这个数据</span><br><span class="line">    3.loate的配置文件中会设置不搜索的区域比如说：文件系统类型、(.git .hg .svn)扩展名、系统目录</span><br></pre></td></tr></table></figure><h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">英文原意：search for files in a drectory hierarchy</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    按照设置的&quot;关键&quot;来按照关键搜索文件</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#find 搜索路径 [选项] 搜索内容</span><br><span class="line">选项：</span><br><span class="line">    -name：按照文件名搜索</span><br><span class="line">    -iname：按照文件名搜索，不区分文件名大小写</span><br><span class="line">    -inum：按照inode号搜索</span><br><span class="line">    -size [+-]大小：按照指定大小搜索文件</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    find &#x2F; -name yum.cnf：在&#x2F;目录下搜索文件名是yum.conf的文件(文件名必须完全匹配)</span><br><span class="line">    find . -iname cangls：大小写都搜索出来(即不区分文件名的大小写)</span><br><span class="line">    find . -inum 262147：如果知道inode号，则可以用find命令来查找文件名(按照inode号搜索文件，也是区分硬链接文件的重要手段，因为硬链接文件的inode号是一致的)</span><br><span class="line">    find . -size 25k ：在当前目录下查找大小刚好是25KB的文件</span><br><span class="line">    find . -size -25k：在当前目录下查找小于25k的文件</span><br><span class="line">    find . -size 1M：主要按M查询字母要大写</span><br><span class="line">    find . -size 1207c：按1207字节来搜索需要加字母c</span><br><span class="line">    </span><br><span class="line">按照修改时间搜索：</span><br><span class="line">选项：</span><br><span class="line">    -atime [+-]时间：按照文件访问时间搜索</span><br><span class="line">    -mtime [+-]时间：按照文件数据修改时间搜索</span><br><span class="line">    -ctime [+-]时间：按照文件状态修改时间搜索</span><br><span class="line">        [+-]时间的含义：</span><br><span class="line">            -5：代表5天内修改的文件</span><br><span class="line">             5：代表前5-6天那一天修改的文件</span><br><span class="line">            +5：代表6天前修改的时间</span><br><span class="line">    当然也有按分钟查询的：amin、mmin、cmin</span><br><span class="line"></span><br><span class="line">按照权限搜索：</span><br><span class="line">选项：</span><br><span class="line">    -perm 权限模式：查找文件权限刚好等于“权限模式”的文件</span><br><span class="line">    -perm -权限模式：查找文件权限全部包含“权限模式”的文件</span><br><span class="line">    -perm +权限模式：查找文件权限包含”权限模式“的任意一个权限的文件</span><br><span class="line">    </span><br><span class="line">按照所有者和所属组搜索</span><br><span class="line">选项：</span><br><span class="line">    -uid 用户ID：按照用户ID查找所有者是指定ID的文件</span><br><span class="line">    -gid 组ID：按照用户组ID查找所属组是制定ID的文件</span><br><span class="line">    —user 用户名：按照用户名查找所有者是指定用户的文件</span><br><span class="line">    -group 组名：按照组名查找所属组是制定用户组的文件</span><br><span class="line">    -nouser：查找没有所有者的文件</span><br><span class="line"></span><br><span class="line">按照文件类型搜索</span><br><span class="line">选项：</span><br><span class="line">    -type d：查找目录</span><br><span class="line">    -type f：查找普通文件</span><br><span class="line">    -type l：查找软链接文件</span><br><span class="line">    </span><br><span class="line">逻辑运算符</span><br><span class="line">选项：</span><br><span class="line">    -a：and逻辑与</span><br><span class="line">    -o：or逻辑或</span><br><span class="line">    -not：not逻辑非</span><br><span class="line"></span><br><span class="line">    find . -size +2k -a -type f：在当前目录下搜索大于2kb并且文件类型是普通文件的文件</span><br><span class="line">    find . -not -name cangls：在当前目录下搜索文件名不是cangls的文件</span><br><span class="line">        注意-not的位置</span><br><span class="line">其他选项：</span><br><span class="line">    -exec:</span><br><span class="line">        [root@localhost ~]#find 搜索路径 [选项] 搜索内容 -exec 命令2 &#123;&#125; \;</span><br><span class="line">        &quot;&#123;&#125;&quot;和&quot;\;&quot;是标注格式，-exec调用命令2来处理find命令的结果&quot;&#123;&#125;&quot;这个就是find命令的查找结果</span><br><span class="line">            find . -perm 444 -exec ls -l &#123;&#125; \;：使用-exec选项把find命令结果交给&quot;ls -l&quot;命令处理</span><br><span class="line">            </span><br><span class="line">    -ok：</span><br><span class="line">        基本与-exec相同，但是-ok会进行询问用户是否这样处理，而-exec不会询问而是直接处理</span><br></pre></td></tr></table></figure><h1 id="压缩和解压命令"><a href="#压缩和解压命令" class="headerlink" title="压缩和解压命令"></a>压缩和解压命令</h1><p> .</p><h2 id="zip格式的压缩命令"><a href="#zip格式的压缩命令" class="headerlink" title="zip格式的压缩命令"></a>zip格式的压缩命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">英文原意：package and compress(archive) files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    压缩文件或目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#zip [选项] 压缩包名 源文件或源目录</span><br><span class="line">选项：</span><br><span class="line">    -r：压缩目录</span><br><span class="line">    </span><br><span class="line">常用格式：</span><br><span class="line">    zip test.zip xxx1 xxx2：同时压缩多个文件到test.zip中</span><br><span class="line">    zip -r test.zip xxx1：压缩目录</span><br></pre></td></tr></table></figure><h3 id="zip解压："><a href="#zip解压：" class="headerlink" title="zip解压："></a>zip解压：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">英文原意：list,test and extract compressed files in a ZIP archive</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    列表、测试、和提取压缩文件中的文件</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#unzip [选项] 压缩包名</span><br><span class="line">选项：</span><br><span class="line">    -d：指定解压的位置</span><br><span class="line">    unzip -d &#x2F;tmp&#x2F; test.zip：把zip解压到指定目录</span><br></pre></td></tr></table></figure><h2 id="gz格式压缩命令"><a href="#gz格式压缩命令" class="headerlink" title=".gz格式压缩命令"></a>.gz格式压缩命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">英文原意：compress or expand files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    压缩文件或目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#gzip [选项] 源文件</span><br><span class="line">选项：</span><br><span class="line">    -c：将压缩数据输出到标准输出中，可以用于保留源文件</span><br><span class="line">    -d：解压缩</span><br><span class="line">    -r：压缩目录</span><br><span class="line">    -v：显示压缩文件的信息</span><br><span class="line">    -数字：用于指定压缩等级，-1压缩等级最低，压缩比最差；-9压缩比最高。默认压缩比是-6</span><br><span class="line">    </span><br><span class="line">常见用法：</span><br><span class="line">    gzip -r test&#x2F;：注意这个压缩目录是把目录下的文件分别压缩</span><br><span class="line">    gzip -d xxx：解压缩</span><br><span class="line">    </span><br><span class="line">    zcat xxx：查看“.gz”格式压缩的文本文件</span><br></pre></td></tr></table></figure><h2 id="“gunzip压缩包”命令"><a href="#“gunzip压缩包”命令" class="headerlink" title="“gunzip压缩包”命令"></a>“gunzip压缩包”命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">英文原意：compress or expand files</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    解压文件或目录</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#gunzip [选项] 名字</span><br><span class="line">选项：</span><br><span class="line">    -r：解压缩目录下的内容注意不是解“打包”</span><br></pre></td></tr></table></figure><h2 id="bz2格式压缩命令"><a href="#bz2格式压缩命令" class="headerlink" title=".bz2格式压缩命令"></a>.bz2格式压缩命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">英文原意：a block-sorting files compressor</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    .bz2格式的压缩命令，不支持目录压缩</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#bzip2 [选项] 源文件</span><br><span class="line">选项：</span><br><span class="line">    -d：解压缩</span><br><span class="line">    -k：压缩式，保留源文件</span><br><span class="line">    -v：显示压缩的详细信息</span><br><span class="line">    -数字：同hzip</span><br><span class="line">    </span><br><span class="line">    bzcat xxx：查看格式压缩的文本文件</span><br><span class="line">[root@localhost ~]#bzip2 -d xx：解压缩</span><br><span class="line">解压缩：</span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#bunzip2 [选项] 源文件</span><br><span class="line">选项：</span><br><span class="line">    -k：解压缩时，保留源文件</span><br></pre></td></tr></table></figure><h2 id="tar格式的打包命令"><a href="#tar格式的打包命令" class="headerlink" title=".tar格式的打包命令"></a>.tar格式的打包命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">英文原意：tar</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    打包与解打包命令</span><br><span class="line">    </span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tar [选项] [-f 压缩包名] 源文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -c：打包</span><br><span class="line">    -f：指定压缩包的文件名。压缩包的扩展名是用来给管理员识别格式的，所以一定要正确指定扩展名</span><br><span class="line">    -v：显示打包文件的过程</span><br><span class="line">    </span><br><span class="line">解打包：</span><br><span class="line">    -x：解打包</span><br><span class="line">    -t：测试，就是不解打包，知识查看包中有哪些文件</span><br><span class="line">    -C 目录：指定解打包位置</span><br><span class="line">常见用法：</span><br><span class="line">    tar -cvf xxx.tar xxx：-cvf一般是习惯用法</span><br><span class="line">    tar -cvf ana.tar anaconda-ks.cfg &#x2F;tmp ：把anaconda-ks.cfg文件和&#x2F;tmp目录打包成ana.tar(多文件同时打包)</span><br><span class="line">解打包：</span><br><span class="line">    tar -xvf anaconda-ks.cfg.tar 解打包到当前目录下</span><br><span class="line">    tar -xvf anaconda-ks.cfg.tar -C &#x2F;tmp：指定解打包目录，把压缩包解打包到&#x2F;tmp目录下</span><br><span class="line">    tar -tvf test.tar 查看文件包中有哪些文件</span><br></pre></td></tr></table></figure><h2 id="tar-gz和-tar-bz2格式命令"><a href="#tar-gz和-tar-bz2格式命令" class="headerlink" title=".tar.gz和.tar.bz2格式命令"></a>.tar.gz和.tar.bz2格式命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#tar [选项] 压缩包 源文件或目录</span><br><span class="line">选项：</span><br><span class="line">    -z：压缩和解压缩“.tar.gz”格式</span><br><span class="line">    -j：压缩和解压缩“.tar.bz2”格式</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    tar -zcvf tmp.tar.gz &#x2F;tmp：把&#x2F;tmp目录直接打包压缩为.tar.gz格式</span><br><span class="line">    tar -zcvf tmp.tar.gz：解压缩.tar.gz格式</span><br><span class="line">    同理z换成j即可符合.tar.bz2格式</span><br></pre></td></tr></table></figure><h1 id="关机和重启命令"><a href="#关机和重启命令" class="headerlink" title="关机和重启命令"></a>关机和重启命令</h1><h2 id="sync数据同步"><a href="#sync数据同步" class="headerlink" title="sync数据同步"></a>sync数据同步</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">英文原意：flush file system buffers</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    把内存中的数据强制向硬盘中保存</span><br><span class="line">    刷新文件系统缓冲区</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#sync   :最好多执行几次保险起见</span><br></pre></td></tr></table></figure><h2 id="shutdown命令"><a href="#shutdown命令" class="headerlink" title="shutdown命令"></a>shutdown命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">英文原意：bring the system down</span><br><span class="line"></span><br><span class="line">用途：</span><br><span class="line">    关机和重启</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#shutdown [选项] 时间 [警告信息]</span><br><span class="line">选项：</span><br><span class="line">    -c：取消已经执行的shutdown命令</span><br><span class="line">    -h：关机</span><br><span class="line">    -r：重启</span><br><span class="line"></span><br><span class="line">常见用法：</span><br><span class="line">    shutdown -r now：即刻重启</span><br><span class="line">    shutdown -r 05:30 制定时间重启，但会占用前台终端</span><br><span class="line">    shutdown -r 05:30 &amp;：把定时重启命令放入后台，&amp;是后台的意思</span><br><span class="line">    shutdown -c：取消定时重启</span><br><span class="line">    shutdown -r +10：十分钟后重启</span><br><span class="line">    </span><br><span class="line">    shutdown -h now：现在关机</span><br><span class="line">    shutdown -h 05:30：指定时间关机</span><br><span class="line">    shutdown -h +10:十分钟后关机</span><br></pre></td></tr></table></figure><h2 id="reboot命令"><a href="#reboot命令" class="headerlink" title="reboot命令"></a>reboot命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#reboot：进行重启</span><br></pre></td></tr></table></figure><h2 id="halt和poweroff命令"><a href="#halt和poweroff命令" class="headerlink" title="halt和poweroff命令"></a>halt和poweroff命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用途：</span><br><span class="line">    都是关机命令</span><br><span class="line"></span><br><span class="line">命令格式：</span><br><span class="line">[root@localhost ~]#halt</span><br><span class="line">[root@localhost ~]#poweroff</span><br></pre></td></tr></table></figure><h2 id="init命令"><a href="#init命令" class="headerlink" title="init命令"></a>init命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用途：</span><br><span class="line">    修改Linux运行级别的命令，也可以用于重启和关机</span><br><span class="line">[root@localhost ~]#init 0：关机，也就是调用系统的0级别</span><br><span class="line">[root@localhost ~]#init 6：重启，也就是调用系统的6级别</span><br></pre></td></tr></table></figure><p><img src="https://common.cnblogs.com/editor/tiny_mce/themes/advanced/img/trans.gif" alt="img"></p>]]></content>
-      
-      
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络(第七版)谢希仁-第3章 数据链路层</title>
+    <url>/2020/07/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC3%E7%AB%A0-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</url>
+    <content><![CDATA[<h1 id="第-3-章-数据链路层"><a href="#第-3-章-数据链路层" class="headerlink" title="第 3 章  数据链路层"></a>第 3 章  数据链路层</h1><h2 id="使用点对点信道的数据链路层"><a href="#使用点对点信道的数据链路层" class="headerlink" title="使用点对点信道的数据链路层"></a>使用点对点信道的数据链路层</h2><h3 id="数据链路和帧"><a href="#数据链路和帧" class="headerlink" title="数据链路和帧"></a>数据链路和帧</h3><ul>
+<li><p>数据链路层使用的信道主要有以下两种类型：</p>
+<ul>
+<li>点对点信道。这种信道使用一对一的点对点通信方式。</li>
+<li>广播信道。这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上连接的主机很多，因此必须使用专用的共享信道协议来协调这些主机的数据发 </li>
+</ul>
+</li>
+<li><p>链路(link)是一条无源的点到点的物理线路段，中间没有任何其他的交换结点。</p>
+</li>
+<li><p>数据链路(data link) 除了物理线路外，还必须有通信协议来控制这些数据的传输。若把实现这些协议的硬件和软件加到链路上，就构成了数据链路。</p>
+</li>
+<li><p>数据链路层传送的是帧</p>
+<a id="more"></a>
+<h3 id="三个基本问题"><a href="#三个基本问题" class="headerlink" title="三个基本问题"></a>三个基本问题</h3></li>
+<li><p>(1) 封装成帧</p>
+<ul>
+<li>将网络层传下来的分组添加首部和尾部，用于标记帧的开始和结束。</li>
+</ul>
+</li>
+<li><p>(2) 透明传输</p>
+<ul>
+<li>透明表示一个实际存在的事物看起来好像不存在一样。</li>
+<li>帧使用首部和尾部进行定界，如果帧的数据部分含有和首部尾部相同的内容，那么帧的开始和结束位置就会被错误的判定。需要在数据部分出现首部尾部相同的内容前面插入转义字符。如果数据部分出现转义字符，那么就在转义字符前面再加个转义字符。在接收端进行处理之后可以还原出原始数据。这个过程透明传输的内容是转义字符，用户察觉不到转义字符的存在。</li>
+</ul>
+</li>
+<li><p>(3) 差错控制 </p>
+<ul>
+<li><p>循环冗余检验 CRC<br>目前数据链路层广泛使用了循环冗余检验（CRC）来检查比特差错。</p>
+</li>
+<li><p>帧检验序列 FCS<br>在数据后面添加上的冗余码称为帧检验序列 FCS (Frame Check Sequence)。</p>
+</li>
+<li><p>冗余码的计算</p>
+<ul>
+<li>例子：<br>现在 k = 6, M = 101001。<br>设 n = 3, 除数 P = 1101，<br>被除数是 2^nM = 101001000。<br>模 2 运算的结果是：商 Q = 110101，<br> 余数 R = 001。<br>把余数 R 作为冗余码添加在数据 M 的后面发送出去。发送的数据是：2^nM + R<br>即：101001001，共 (k + n) 位。 </li>
+</ul>
+</li>
+<li><p>概要: CRC 是一种常用的检错方法，而 FCS 是添加在数据后面的冗余码。<br>FCS 可以用 CRC 这种方法得出，但 CRC 并非用来获得 FCS 的唯一方法。</p>
+<h2 id="点对点协议-PPP"><a href="#点对点协议-PPP" class="headerlink" title="点对点协议 PPP"></a>点对点协议 PPP</h2><h3 id="PPP-协议的特点"><a href="#PPP-协议的特点" class="headerlink" title="PPP 协议的特点"></a>PPP 协议的特点</h3></li>
+</ul>
+</li>
+<li><p>互联网用户通常需要连接到某个 ISP 之后才能接入到互联网，PPP 协议是用户计算机和 ISP 进行通信时所使用的数据链路层协议。</p>
+<h3 id="PPP-协议的帧格式"><a href="#PPP-协议的帧格式" class="headerlink" title="PPP 协议的帧格式"></a>PPP 协议的帧格式</h3></li>
+<li><p>示意图：<br>F 字段为帧的定界符<br>A 和 C 字段暂时没有意义<br>FCS 字段是使用 CRC 的检验序列<br>信息部分的长度不超过 1500</p>
+<h3 id="PPP-协议的工作状态"><a href="#PPP-协议的工作状态" class="headerlink" title="PPP 协议的工作状态"></a>PPP 协议的工作状态</h3></li>
+<li><p>过程：<br>当用户拨号接入 ISP 时，路由器的调制解调器对拨号做出确认，并建立一条物理连接。<br>PC 机向路由器发送一系列的 LCP 分组（封装成多个 PPP 帧）。<br>这些分组及其响应选择一些 PPP 参数，和进行网络层配置，NCP 给新接入的 PC机分配一个临时的 IP 地址，使 PC 机成为因特网上的一个主机。<br>通信完毕时，NCP 释放网络层连接，收回原来分配出去的 IP 地址。接着，LCP 释放数据链路层连接。最后释放的是物理层的连接。</p>
+<h2 id="使用广播信道的数据链路层"><a href="#使用广播信道的数据链路层" class="headerlink" title="使用广播信道的数据链路层"></a>使用广播信道的数据链路层</h2><h3 id="局域网的数据链路层"><a href="#局域网的数据链路层" class="headerlink" title="局域网的数据链路层"></a>局域网的数据链路层</h3></li>
+<li><p>局域网是一种典型的广播信道，主要特点是网络为一个单位所拥有，且地理范围和站点数目均有限。</p>
+</li>
+<li><p>主要有以太网、令牌环网、FDDI 和 ATM 等局域网技术，目前以太网占领着有线局域网市场。</p>
+</li>
+<li><p>可以按照网络拓扑结构对局域网进行分类：</p>
+<ul>
+<li>星形网</li>
+<li>环形网</li>
+<li>总线网</li>
+<li>树形网 </li>
+</ul>
+</li>
+<li><p>数据链路层的两个子层 </p>
+<ul>
+<li>逻辑链路控制 LLC (Logical Link Control)子层</li>
+<li>媒体接入控制 MAC (Medium Access Control)子层。</li>
+<li>概要: 与接入到传输媒体有关的内容都放在 MAC子层，而 LLC 子层则与传输媒体无关，不管采用何种协议的局域网对 LLC 子层来说都是透明的<br>所以以后一般不考虑 LLC 子层 </li>
+</ul>
+</li>
+<li><p>适配器</p>
+<ul>
+<li>网络接口板又称为通信适配器(adapter)或网络接口卡 NIC (Network Interface Card)，或“网卡”。<ul>
+<li>适配器的重要功能：<ul>
+<li>进行串行/并行转换。</li>
+<li>对数据进行缓存。</li>
+<li>在计算机的操作系统安装设备驱动程序。</li>
+<li>实现以太网协议。 <h3 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
+<ul>
+<li>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。</li>
+<li>载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。</li>
+<li>碰撞检测 ：边发送边监听 ，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。</li>
+</ul>
+</li>
+<li><p>具体内容</p>
+<ul>
+<li>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</li>
+<li>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</li>
+<li>概要: 示意图<br>P85<h2 id="使用广播信道的以太网"><a href="#使用广播信道的以太网" class="headerlink" title="使用广播信道的以太网"></a>使用广播信道的以太网</h2><h3 id="使用集线器的星形拓扑"><a href="#使用集线器的星形拓扑" class="headerlink" title="使用集线器的星形拓扑"></a>使用集线器的星形拓扑</h3></li>
+</ul>
+</li>
+<li><p>传统以太网最初是使用粗同轴电缆，后来演进到使用比较便宜的细同轴电缆，最后发展为使用更便宜和更灵活的双绞线。<br>这种以太网采用星形拓扑，在星形的中心则增加了一种可靠性非常高的设备，叫做集线器(hub)  </p>
+<h3 id="以太网的信道利用率"><a href="#以太网的信道利用率" class="headerlink" title="以太网的信道利用率"></a>以太网的信道利用率</h3></li>
+<li><p>一个帧从开始发送，经可能发生的碰撞后，将再重传数次，到发送成功且信道转为空闲(即再经过时间 τ  使得信道上无信号在传播)时为止，是发送一帧所需的平均时间。 </p>
+</li>
+<li><p>发送一帧占用线路的时间是 T0 +  τ ，而帧本身的发送时间是 T0。于是我们可计算出理想情况下的极限信道利用率 Smax为： </p>
+<h3 id="以太网的-MAC-层"><a href="#以太网的-MAC-层" class="headerlink" title="以太网的 MAC 层"></a>以太网的 MAC 层</h3></li>
+<li><p>MAC 地址是链路层地址，长度为 6 字节（48 位），用于唯一标识网络适配器（网卡）。</p>
+</li>
+<li><p>一台主机拥有多少个网络适配器就有多少个 MAC 地址。例如笔记本电脑普遍存在无线网络适配器和有线网络适配器，因此就有两个 MAC 地址。</p>
+<h3 id="以太网帧格式："><a href="#以太网帧格式：" class="headerlink" title="以太网帧格式："></a>以太网帧格式：</h3></li>
+<li><p>类型 ：标记上层使用的协议；<br>数据 ：长度在 46-1500 之间，如果太小则需要填充；<br>FCS ：帧检验序列，使用的是 CRC 检验方法；</p>
+</li>
+<li><p>出现什么情况是无效的MAC帧</p>
+<h2 id="扩展的以太网"><a href="#扩展的以太网" class="headerlink" title="扩展的以太网"></a>扩展的以太网</h2><h3 id="在物理层扩展以太网"><a href="#在物理层扩展以太网" class="headerlink" title="在物理层扩展以太网"></a>在物理层扩展以太网</h3></li>
+<li><p>用多个集线器可连成更大的局域网</p>
+<ul>
+<li>用集线器组成更大的局域网都在一个碰撞域中<ul>
+<li>优点<ul>
+<li>使原来属于不同碰撞域的局域网上的计算机能够进行跨碰撞域的通信。</li>
+<li>扩大了局域网覆盖的地理范围。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>碰撞域增大了，但总的吞吐量并未提高。</li>
+<li>如果不同的碰撞域使用不同的数据率，那么就不能用集线器将它们互连起来。<h3 id="在数据链路层扩展以太网"><a href="#在数据链路层扩展以太网" class="headerlink" title="在数据链路层扩展以太网"></a>在数据链路层扩展以太网</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>在数据链路层扩展局域网是使用网桥。</p>
+<ul>
+<li>网桥工作在数据链路层，它根据 MAC 帧的目的地址对收到的帧进行转发。<br>网桥具有过滤帧的功能。当网桥收到一个帧时，并不是向所有的接口转发此帧，而是先检查此帧的目的 MAC 地址，然后再确定将该帧转发到哪一个接口 。<ul>
+<li>优点<ul>
+<li>过滤通信量。 </li>
+<li>扩大了物理范围。</li>
+<li>提高了可靠性。</li>
+<li>可互连不同物理层、不同 MAC 子层和不同速率（如10 Mb/s 和 100 Mb/s 以太网）的局域网。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>存储转发增加了时延。 </li>
+<li>在MAC 子层并没有流量控制功能。 </li>
+<li>具有不同 MAC 子层的网段桥接在一起时时延更大。</li>
+<li>网桥只适合于用户数不太多(不超过几百个)和通信量不太大的局域网，否则有时还会因传播过多的广播信息而产生网络拥塞。这就是所谓的广播风暴。  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>交换机<ul>
+<li>交换机具有自学习能力，学习的是交换表的内容，交换表中存储着 MAC 地址到接口的映射。<br>正是由于这种自学习能力，因此交换机是一种即插即用设备，不需要网络管理员手动配置交换表内容。</li>
+<li>但有时为了增加网络的可靠性，在使用以太网交换机组网时，往往会增加一些冗余的链路。在这些情况下，自学习的过程就可能导致以太网帧在网络的某个环路中无限制地兜圈，为了解决兜圈子问题，IEEE 的 802.ID 标准制定了一个生成树协议。<ul>
+<li>不改变网络的实际拓扑，但在逻辑上则切断某些链路，使得从一台主机到所有其他主机的路径是无环路的树状结构，从而消除了兜圈子现象。<h3 id="虚拟局域网"><a href="#虚拟局域网" class="headerlink" title="虚拟局域网"></a>虚拟局域网</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>虚拟局域网可以建立与物理位置无关的逻辑组，只有在同一个虚拟局域网中的成员才会收到链路层广播信息。</p>
+</li>
+<li><p>例如下图中 (A1, A2, A3, A4) 属于一个虚拟局域网，A1 发送的广播会被 A2、A3、A4 收到，而其它站点收不到。<br>  P101</p>
+</li>
+<li><p>使用 VLAN 干线连接来建立虚拟局域网，每台交换机上的一个特殊接口被设置为干线接口，以互连 VLAN 交换机。IEEE 定义了一种扩展的以太网帧格式 802.1Q，它在标准以太网帧上加进了 4 字节首部 VLAN 标签，用于表示该帧属于哪一个虚拟局域网。</p>
+<h2 id="高速以太网"><a href="#高速以太网" class="headerlink" title="高速以太网"></a>高速以太网</h2><h3 id="100BASE-T-以太网"><a href="#100BASE-T-以太网" class="headerlink" title="100BASE-T 以太网"></a>100BASE-T 以太网</h3></li>
+<li><p>速率达到或超过 100 Mb/s 的以太网称为高速以太网</p>
+</li>
+<li><p>可在全双工方式下工作而无冲突发生。因此，不使用 CSMA/CD 协议。</p>
+<h3 id="吉比特以太网"><a href="#吉比特以太网" class="headerlink" title="吉比特以太网"></a>吉比特以太网</h3></li>
+<li><p>允许在 1 Gb/s 下全双工和半双工两种方式工作。</p>
+</li>
+<li><p>在半双工方式下使用 CSMA/CD 协议（全双工方式不需要使用 CSMA/CD 协议）。</p>
+<h3 id="10-吉比特以太网"><a href="#10-吉比特以太网" class="headerlink" title="10 吉比特以太网"></a>10 吉比特以太网</h3></li>
+<li><p>10 吉比特以太网只工作在全双工方式</p>
+</li>
+<li><p>也不使用 CSMA/CD 协议。</p>
+<h3 id="使用高速以太网进行宽带接入"><a href="#使用高速以太网进行宽带接入" class="headerlink" title="使用高速以太网进行宽带接入"></a>使用高速以太网进行宽带接入</h3></li>
+<li><p>以太网接入的重要特点是它可提供双向的宽带通信，并且可根据用户对带宽的需求灵活地进行带宽升级。</p>
+</li>
+<li><p>采用以太网接入可实现端到端的以太网传输，中间不需要再进行帧格式的转换。这就提高了数据的传输效率和降低了传输的成本。  </p>
+</li>
+</ul>
+]]></content>
       <categories>
-          
-          <category> Linux </category>
-          
+        <category>笔记</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Linux </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>测试</title>
-      <link href="/2020/05/15/%E6%B5%8B%E8%AF%95/"/>
-      <url>/2020/05/15/%E6%B5%8B%E8%AF%95/</url>
-      
-        <content type="html"><![CDATA[<h1 id="我的第一个标签"><a href="#我的第一个标签" class="headerlink" title="我的第一个标签"></a>我的第一个标签</h1><h2 id="曾经的是这样的"><a href="#曾经的是这样的" class="headerlink" title="曾经的是这样的"></a>曾经的是这样的</h2><p>###也许是这样的<br>asdafasfasfasdfa新政策是徐水电费水电费水电费阿斯蒂芬达到</p><a id="more"></a><h1 id="我的第二个标签"><a href="#我的第二个标签" class="headerlink" title="我的第二个标签"></a>我的第二个标签</h1><h2 id="现在是这样的"><a href="#现在是这样的" class="headerlink" title="现在是这样的"></a>现在是这样的</h2><h3 id="也许是这样的"><a href="#也许是这样的" class="headerlink" title="也许是这样的"></a>也许是这样的</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DOF 0x7f7f7f7f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> endl <span class="meta-string">'\n'</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mem(a,b) memset(a,b,sizeof(a))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> debug(case,x); cout&lt;&lt;case&lt;&lt;<span class="meta-string">"  : "</span>&lt;&lt;x&lt;&lt;endl;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IO ios::sync_with_stdio(false);cin.tie(0);cout.tie(0)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">2e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> a[maxn];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    ll len,l,r;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> node&amp; a)<span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(a.len==len) <span class="keyword">return</span> a.l&lt;l;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> a.len&gt;len;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">priority_queue&lt;node&gt;qt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//    priority_queue&lt;node&gt;qt;</span></span><br><span class="line">    ll n;<span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    qt.push(&#123;n,<span class="number">1</span>,n&#125;);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">        node tmp=qt.top();qt.pop();</span><br><span class="line">        ll mid=(tmp.l+tmp.r)/<span class="number">2</span>;</span><br><span class="line">        a[mid]=i;</span><br><span class="line">        ll len=tmp.len,l=tmp.l,r=tmp.r;</span><br><span class="line">        <span class="keyword">if</span>(len&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span>,l,mid<span class="number">-1</span>&#125;);</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span>,mid+<span class="number">1</span>,r&#125;);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span><span class="number">-1</span>,l,mid<span class="number">-1</span>&#125;);</span><br><span class="line">            qt.push(&#123;len/<span class="number">2</span>,mid+<span class="number">1</span>,r&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;a[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//    freopen("ii.txt","r",stdin);</span></span><br><span class="line">    <span class="comment">//   freopen("oo.txt","w",stdout);</span></span><br><span class="line">    <span class="keyword">int</span> t;<span class="built_in">cin</span>&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        solve();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络(第七版)谢希仁-第2章 物理层</title>
+    <url>/2020/06/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC2%E7%AB%A0%20%E7%89%A9%E7%90%86%E5%B1%82/</url>
+    <content><![CDATA[<h1 id="第-2-章-物理层"><a href="#第-2-章-物理层" class="headerlink" title="第 2 章  物理层"></a>第 2 章  物理层</h1><h2 id="物理层的基本概念"><a href="#物理层的基本概念" class="headerlink" title="物理层的基本概念"></a>物理层的基本概念</h2><h3 id="物理层的主要任务描述为确定与传输媒体的接口的一些特性"><a href="#物理层的主要任务描述为确定与传输媒体的接口的一些特性" class="headerlink" title="物理层的主要任务描述为确定与传输媒体的接口的一些特性"></a>物理层的主要任务描述为确定与传输媒体的接口的一些特性</h3><ul>
+<li><p>机械特性    指明接口所用接线器的形状和尺寸、引线数目和排列、固定和锁定装置等等。</p>
+</li>
+<li><p>电气特性    指明在接口电缆的各条线上出现的电压的范围。</p>
+<a id="more"></a></li>
+<li><p>功能特性    指明某条线上出现的某一电平的电压表示何种意义。</p>
+</li>
+<li><p>过程特性    指明对于不同功能的各种可能事件的出现顺序。 </p>
+</li>
+</ul>
+<h2 id="数据通信的基础知识"><a href="#数据通信的基础知识" class="headerlink" title="数据通信的基础知识"></a>数据通信的基础知识</h2><h3 id="数据通信系统的模型"><a href="#数据通信系统的模型" class="headerlink" title="数据通信系统的模型"></a>数据通信系统的模型</h3><ul>
+<li><p>一个数据通信系统可划分为三大部分：源系统(或发送端、发送方)、传输系统(或传输网络)和目的系统(或接收端、接收方)。</p>
+<ul>
+<li>源系统：<ul>
+<li>源点： 源点设备产生要传输的数据。</li>
+<li>发送器： 通常源点生成的数字比特流要通过发送器编码后才能够在传输系统中进行传输。典型的发送器就是调制器。</li>
+</ul>
+</li>
+<li>目的系统：<ul>
+<li>接收器： 接收传输系统传送来的信号，并把它转换成能够被目的设备处理的信息。典型的接收器是解调器。</li>
+<li>终点： 终点设备从接收器获取传送来的数字比特流，然后把信息输出。(目的站或信宿)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常用术语：</p>
+<ul>
+<li><p>通信的目的是传送消息。</p>
+</li>
+<li><p>数据是运送消息的实体。</p>
+</li>
+<li><p>信号则是数据的电气或电磁的表现。</p>
+<ul>
+<li><p>根据参数分为以下两大类：</p>
+<ul>
+<li><p>模拟信号：(或连续信号) 代表消息的参数的取值是连续的。</p>
+</li>
+<li><p>数字信号：(或离散信号) 代表消息的参数的取值是离散的。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="有关信道的几个基本概念"><a href="#有关信道的几个基本概念" class="headerlink" title="有关信道的几个基本概念"></a>有关信道的几个基本概念</h3><ul>
+<li><p>信道：传送信息的媒体。因子，一条通信电路往往包含一条发送信道和一条接收信道。</p>
+</li>
+<li><p>单向通信（单工通信）——只能有一个方向的通信而没有反方向的交互。</p>
+</li>
+<li><p>双向交替通信（半双工通信）——通信的双方都可以发送信息，但不能双方同时发送(当然也就不能同时接收)。</p>
+</li>
+<li><p>双向同时通信（全双工通信）——通信的双方可以同时发送和接收信息。 </p>
+</li>
+<li><p>基本的带通调制方法 (P44)</p>
+<ul>
+<li><p>调幅(AM)：载波的振幅随基带数字信号而变化。 </p>
+</li>
+<li><p>调频(FM)：载波的频率随基带数字信号而变化。</p>
+</li>
+<li><p>调相(PM) ：载波的初始相位随基带数字信号而变化。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="信道的极限容量"><a href="#信道的极限容量" class="headerlink" title="信道的极限容量"></a>信道的极限容量</h3><ul>
+<li><p>信道能够通过的频率范围</p>
+<ul>
+<li>1924 年，奈奎斯特(Nyquist)就推导出了著名的奈氏准则。他给出了在假定的理想条件下，为了避免码间串扰，码元的传输速率的上限值</li>
+<li>在任何信道中，码元传输的速率是有上限的，传输速率超过此上限，就会出现严重的码间串扰的问题，使接收端对码元的判决(即识别)成为不可能。</li>
+</ul>
+</li>
+<li><p>信噪比 （P45)</p>
+</li>
+<li><p>信噪比：信号的平均功率和噪声的平均功率之比。</p>
+</li>
+<li><p>香农(Shannon)用信息论的理论推导出了带宽受限且有高斯白噪声干扰的信道的极限、无差错的信息传输速率。<br>信道的极限信息传输速率 C 可表达为<br>C = W log2(1+S/N)  (bit/s )</p>
+<pre><code>W 为信道的带宽（以 Hz 为单位）；
+S 为信道内所传信号的平均功率；
+N 为信道内部的高斯噪声功率。</code></pre><ul>
+<li><p>香农公式表明</p>
+<ul>
+<li>信道的带宽或信道中的信噪比越大，则信息的极限传输速率就越高。 </li>
+<li>只要信息传输速率低于信道的极限信息传输速率，就一定可以找到某种办法来实现无差错的传输。</li>
+<li>若信道带宽 W 或信噪比 S/N 没有上限（当然实际信道不可能是这样的），则信道的极限信息传输速率 C 也就没有上限。</li>
+<li>实际信道上能够达到的信息传输速率要比香农的极限传输速率低不少。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>  ​            </p>
+<h2 id="物理层下面的传输媒体"><a href="#物理层下面的传输媒体" class="headerlink" title="物理层下面的传输媒体"></a>物理层下面的传输媒体</h2><h3 id="导向传输媒体"><a href="#导向传输媒体" class="headerlink" title="导向传输媒体"></a>导向传输媒体</h3><pre><code>P47</code></pre><ul>
+<li><p>双绞线：双绞线已成为局域网中的主流传输媒体</p>
+<ul>
+<li><strong>屏蔽双绞线 STP</strong> (Shielded Twisted Pair)</li>
+<li><strong>无屏蔽双绞线 UTP</strong> (Unshielded Twisted Pair)</li>
+</ul>
+</li>
+<li><p>同轴电缆：</p>
+<ul>
+<li><strong>细缆</strong>（适合短距离，安装容易，造价低）</li>
+<li><strong>粗缆</strong>（适合较大局域网，布线距离长，可靠性好）</li>
+</ul>
+</li>
+<li><p>光纤：光纤有很好的抗电磁干扰特性和很宽的频带，主要用在环形网中</p>
+<ul>
+<li><strong>多模光纤</strong>（用发光二极管，便宜，定向性较差）</li>
+<li><strong>单模光纤</strong>（注入激光二极管，定向性好）</li>
+</ul>
+</li>
+</ul>
+<h3 id="非导向传输媒体"><a href="#非导向传输媒体" class="headerlink" title="非导向传输媒体"></a>非导向传输媒体</h3><pre><code>P49</code></pre><p>非导向传输媒体：微波、红外线、激光、卫星通信</p>
+<ul>
+<li><p>无线传输所使用的频段很广。</p>
+</li>
+<li><p>短波通信主要是靠电离层的反射，但短波信道的通信质量较差。</p>
+</li>
+<li><p>微波在空间主要是直线传播。 </p>
+<ul>
+<li><p>卫星通信  </p>
+</li>
+<li><p>地面微波接力通信</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="信道复用技术"><a href="#信道复用技术" class="headerlink" title="信道复用技术"></a>信道复用技术</h2><h3 id="频分复用、时分复用和统计时分复用"><a href="#频分复用、时分复用和统计时分复用" class="headerlink" title="频分复用、时分复用和统计时分复用"></a>频分复用、时分复用和统计时分复用</h3><pre><code>P53        需要掌握计算</code></pre><ul>
+<li>频分复用 FDM(Frequency Division Multiplexing) <ul>
+<li>用户在分配到一定的频带后，在通信过程中自始至终都占用这个频带。</li>
+</ul>
+</li>
+<li>时分复用TDM(Time Division Multiplexing) <ul>
+<li>时分复用则是将时间划分为一段段等长的时分复用帧（TDM 帧）。每一个时分复用的用户在每一个 TDM 帧中占用固定序号的时隙。</li>
+</ul>
+</li>
+<li>统计时分复用 STDM(Statistic TDM)  <ul>
+<li>是对时分复用的一种改进，不固定每个用户在时分复用帧中的位置，只要有数据就集中起来组成统计时分复用帧然后发送。<h3 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h3></li>
+</ul>
+</li>
+<li>波分复用 WDM(Wavelength Division Multiplexing)  <ul>
+<li>光的频分复用。由于光的频率很高，因此习惯上用波长而不是频率来表示所使用的光载波。<h3 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h3></li>
+</ul>
+</li>
+<li>码分复用 CDM(Code Division Multiplexing)  <ul>
+<li>常用的名词是码分多址 CDMA     (Code Division Multiple Access)。</li>
+<li>各用户使用经过特殊挑选的不同码型，因此彼此不会造成干扰。</li>
+<li>这种系统发送的信号有很强的抗干扰能力，其频谱类似于白噪声，不易被敌人发现。 </li>
+<li>每一个比特时间划分为 m 个短的间隔，称为码片(chip)。</li>
+<li>具体内容<ul>
+<li>1.为每个用户分配 m bit 的码片，并且所有的码片正交，对于任意两个码片 S 和 T 有</li>
+<li>2.为了讨论方便，取 m=8，设码片 s 为 00011011。在拥有该码片的用户发送比特 1 时就发送该码片，发送比特 0 时就发送该码片的反码 11100100。</li>
+<li>在计算时将 00011011 记作 (-1 -1 -1 +1 +1 -1 +1 +1)，可以得到(其中 S’ 为 S 的反码。)</li>
+<li>3.利用上面的式子我们知道，当接收端使用码片  对接收到的数据进行内积运算时，结果为 0 的是其它用户发送的数据，结果为 1 的是用户发送的比特 1，结果为 -1 的是用户发送的比特 0。</li>
+<li>4.码分复用需要发送的数据量为原先的 m 倍。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h2><h3 id="脉码调制-PCM-体制"><a href="#脉码调制-PCM-体制" class="headerlink" title="脉码调制 PCM 体制"></a>脉码调制 PCM 体制</h3><h3 id="同步光纤网-SONET-和同步数字系列-SDH"><a href="#同步光纤网-SONET-和同步数字系列-SDH" class="headerlink" title="同步光纤网 SONET 和同步数字系列 SDH"></a>同步光纤网 SONET 和同步数字系列 SDH</h3><h2 id="宽带接入技术"><a href="#宽带接入技术" class="headerlink" title="宽带接入技术"></a>宽带接入技术</h2><h3 id="xDSL技术"><a href="#xDSL技术" class="headerlink" title="xDSL技术"></a>xDSL技术</h3><ul>
+<li>xDSL 技术就是用数字技术对现有的模拟电话用户线进行改造，使它能够承载宽带业务。把 0~4 kHz 低端频谱留给传统电话使用，而把原来没有被利用的高端频谱留给用户上网使用。<h3 id="光纤同轴混合网（HFC-网）"><a href="#光纤同轴混合网（HFC-网）" class="headerlink" title="光纤同轴混合网（HFC 网）"></a>光纤同轴混合网（HFC 网）</h3></li>
+<li>HFC 网是在目前覆盖面很广的有线电视网 CATV 的基础上开发的一种居民宽带接入网。HFC 网除可传送 CATV 外，还提供电话、数据和其他宽带交互型业务。</li>
+</ul>
+<h3 id="FTTx-技术"><a href="#FTTx-技术" class="headerlink" title="FTTx 技术"></a>FTTx 技术</h3><ul>
+<li>FTTx（光纤到……）也是一种实现宽带居民接入网的方案。这里字母 x 可代表不同意思。<ul>
+<li>光纤到家 FTTH (Fiber To The Home)：光纤一直铺设到用户家庭可能是居民接入网最后的解决方法。</li>
+<li>光纤到大楼 FTTB (Fiber To The Building)：光纤进入大楼后就转换为电信号，然后用电缆或双绞线分配到各用户。</li>
+<li>光纤到路边 FTTC (Fiber To The Curb)：从路边到各用户可使用星形结构双绞线作为传输媒体。 </li>
+</ul>
+</li>
+</ul>
+]]></content>
       <categories>
-          
-          <category> 测试 </category>
-          
+        <category>笔记</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 测试sss </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-  
-  
+  </entry>
+  <entry>
+    <title>计算机网络(第七版)谢希仁-第4章 网络层</title>
+    <url>/2020/07/12/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E4%B8%83%E7%89%88-%E8%B0%A2%E5%B8%8C%E4%BB%81-%E7%AC%AC4%E7%AB%A0-%E7%BD%91%E7%BB%9C%E5%B1%82/</url>
+    <content><![CDATA[<h1 id="第-4-章-网络层"><a href="#第-4-章-网络层" class="headerlink" title="第 4 章  网络层"></a>第 4 章  网络层</h1><h2 id="网络层提供的两种服务"><a href="#网络层提供的两种服务" class="headerlink" title="网络层提供的两种服务"></a>网络层提供的两种服务</h2><h3 id="虚电路服务"><a href="#虚电路服务" class="headerlink" title="虚电路服务"></a>虚电路服务</h3><h3 id="数据报服务"><a href="#数据报服务" class="headerlink" title="数据报服务"></a>数据报服务</h3><h3 id="概要-虚电路服务与数据报服务的对比"><a href="#概要-虚电路服务与数据报服务的对比" class="headerlink" title="概要: 虚电路服务与数据报服务的对比"></a>概要: 虚电路服务与数据报服务的对比</h3><h2 id="网际协议-IP"><a href="#网际协议-IP" class="headerlink" title="网际协议 IP"></a>网际协议 IP</h2> <a id="more"></a>
+
+<h3 id="强烈推荐搭配计算机网络思维导图食用最佳！"><a href="#强烈推荐搭配计算机网络思维导图食用最佳！" class="headerlink" title="强烈推荐搭配计算机网络思维导图食用最佳！"></a>强烈推荐搭配计算机网络思维导图食用最佳！</h3><p>计算机网络思维导图：<a href="https://pan.baidu.com/s/14Amf_JLdwDsy2JpAjrT5EQ" target="_blank" rel="noopener">https://pan.baidu.com/s/14Amf_JLdwDsy2JpAjrT5EQ</a> 提取码: 8xhr</p>
+<h3 id="强烈推荐搭配计算机网络思维导图食用最佳！-1"><a href="#强烈推荐搭配计算机网络思维导图食用最佳！-1" class="headerlink" title="强烈推荐搭配计算机网络思维导图食用最佳！"></a>强烈推荐搭配计算机网络思维导图食用最佳！</h3><h3 id="网际协议-IP-是-TCP-IP-体系中两个最主要的协议之一。与-IP-协议配套使用的还有四个协议："><a href="#网际协议-IP-是-TCP-IP-体系中两个最主要的协议之一。与-IP-协议配套使用的还有四个协议：" class="headerlink" title="网际协议 IP 是 TCP/IP 体系中两个最主要的协议之一。与 IP 协议配套使用的还有四个协议："></a>网际协议 IP 是 TCP/IP 体系中两个最主要的协议之一。与 IP 协议配套使用的还有四个协议：</h3><ul>
+<li>地址解析协议 ARP (Address Resolution Protocol)</li>
+<li>逆地址解析协议 RARP   (Reverse Address Resolution Protocol)</li>
+<li>网际控制报文协议 ICMP   (Internet Control Message Protocol)</li>
+<li>网际组管理协议 IGMP   (Internet Group Management Protocol)<h3 id="虚拟互连网络"><a href="#虚拟互连网络" class="headerlink" title="虚拟互连网络"></a>虚拟互连网络</h3></li>
+<li>网络互相连接起来要使用一些中间设备<ul>
+<li>物理层中继系统：转发器(repeater)。</li>
+<li>数据链路层中继系统：网桥或桥接器(bridge)。</li>
+<li>网络层中继系统：路由器(router)。</li>
+<li>网桥和路由器的混合物：桥路器(brouter)。</li>
+<li>网络层以上的中继系统：网关(gateway)。  </li>
+</ul>
+</li>
+</ul>
+<h3 id="IP-数据报的格式"><a href="#IP-数据报的格式" class="headerlink" title="IP 数据报的格式"></a>IP 数据报的格式</h3><ul>
+<li>版本 : 有 4（IPv4）和 6（IPv6）两个值；</li>
+<li>首部长度 : 占 4 位，因此最大值为 15。值为 1 表示的是 1 个 32 位字的长度，也就是 4 字节。因为固定部分长度为 20 字节，因此该值最小为 5。如果可选字段的长度不是 4 字节的整数倍，就用尾部的填充部分来填充。</li>
+<li>区分服务 : 用来获得更好的服务，一般情况下不使用。</li>
+<li>总长度 : 包括首部长度和数据部分长度。</li>
+<li>生存时间 ：TTL，它的存在是为了防止无法交付的数据报在互联网中不断兜圈子。以路由器跳数为单位，当 TTL 为 0 时就丢弃数据报。</li>
+<li>协议 ：指出携带的数据应该上交给哪个协议进行处理，例如 ICMP、TCP、UDP 等。</li>
+<li>首部检验和 ：因为数据报每经过一个路由器，都要重新计算检验和，因此检验和不包含数据部分可以减少计算的工作量。</li>
+<li>标识 : 在数据报长度过长从而发生分片的情况下，相同数据报的不同分片具有相同的标识符。</li>
+<li>片偏移 : 和标识符一起，用于发生分片的情况。片偏移的单位为 8 字节。<ul>
+<li>IP数据报分片</li>
+</ul>
+</li>
+<li>概要: 示意图<h3 id="分类的-IP-地址"><a href="#分类的-IP-地址" class="headerlink" title="分类的 IP 地址"></a>分类的 IP 地址</h3></li>
+<li>IP 地址的编址方式经历了三个历史阶段：<ul>
+<li>分类<ul>
+<li>由两部分组成，网络号和主机号，其中不同分类具有不同的网络号长度，并且是固定的。<br>IP 地址 ::= {&lt; 网络号 &gt;, &lt; 主机号 &gt;}<ul>
+<li>示意图</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>子网划分<ul>
+<li>通过在主机号字段中拿一部分作为子网号，把两级 IP 地址划分为三级 IP 地址。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>IP 地址 ::= {&lt; 网络号 &gt;, &lt; 子网号 &gt;, &lt; 主机号 &gt;}</p>
+<p>要使用子网，必须配置子网掩码。一个 B 类地址的默认子网掩码为 255.255.0.0，如果 B 类地址的子网占两个比特，那么子网掩码为 11111111 11111111 11000000 00000000，也就是 255.255.192.0。</p>
+<p>注意，外部网络看不到子网的存在。</p>
+<ul>
+<li>无分类</li>
+<li>无分类编址 CIDR 消除了传统 A 类、B 类和 C 类地址以及划分子网的概念，使用网络前缀和主机号来对 IP 地址进行编码，网络前缀的长度可以根据需要变化。</li>
+</ul>
+<p>IP 地址 ::= {&lt; 网络前缀号 &gt;, &lt; 主机号 &gt;}</p>
+<p>CIDR 的记法上采用在 IP 地址后面加上网络前缀长度的方法，例如 128.14.35.7/20 表示前 20 位为网络前缀。</p>
+<p>CIDR 的地址掩码可以继续称为子网掩码，子网掩码首 1 长度为网络前缀的长度。</p>
+<p>一个 CIDR 地址块中有很多地址，一个 CIDR 表示的网络就可以表示原来的很多个网络，并且在路由表中只需要一个路由就可以代替原来的多个路由，减少了路由表项的数量。把这种通过使用网络前缀来减少路由表项的方式称为路由聚合，也称为 构成超网 。</p>
+<p>在路由表中的项目由“网络前缀”和“下一跳地址”组成，在查找时可能会得到不止一个匹配结果，应当采用最长前缀匹配来确定应该匹配哪一个。</p>
+<h3 id="IP-地址与硬件地址"><a href="#IP-地址与硬件地址" class="headerlink" title="IP 地址与硬件地址"></a>IP 地址与硬件地址</h3><ul>
+<li>IP层抽象的互联网屏蔽了下层很复杂的细节<br>在抽象的网络层上讨论问题，就能够使用<br>统一的、抽象的 IP 地址<br>研究主机和主机或主机和路由器之间的通信 <ul>
+<li>示意图<h3 id="地址解析协议-ARP-与逆地址解析协议RARP"><a href="#地址解析协议-ARP-与逆地址解析协议RARP" class="headerlink" title="地址解析协议 ARP 与逆地址解析协议RARP"></a>地址解析协议 ARP 与逆地址解析协议RARP</h3></li>
+</ul>
+</li>
+<li>缘由<ul>
+<li>网络层实现主机之间的通信，而链路层实现具体每段链路之间的通信。因此在通信过程中，IP 数据报的源地址和目的地址始终不变，而 MAC 地址随着链路的改变而改变。</li>
+</ul>
+</li>
+<li>地址解析协议 ARP<ul>
+<li>ARP 实现由 IP 地址得到 MAC 地址<ul>
+<li>每个主机都有一个 ARP 高速缓存，里面有本局域网上的各主机和路由器的 IP 地址到 MAC 地址的映射表。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>如果主机 A 知道主机 B 的 IP 地址，但是 ARP 高速缓存中没有该 IP 地址到 MAC 地址的映射，此时主机 A 通过广播的方式发送 ARP 请求分组，主机 B 收到该请求后会发送 ARP 响应分组给主机 A 告知其 MAC 地址，随后主机 A 向其高速缓存中写入主机 B 的 IP 地址到 MAC 地址的映射。</p>
+<ul>
+<li><p>示意图    </p>
+</li>
+<li><p>逆地址解析协议 RARP</p>
+<ul>
+<li>逆地址解析协议 RARP 使只知道自己硬件地址的主机能够知道其 IP 地址。<ul>
+<li>这种主机往往是无盘工作站。 因此 RARP协议目前已很少使用。<h3 id="IP-层转发分组的流程"><a href="#IP-层转发分组的流程" class="headerlink" title="IP 层转发分组的流程"></a>IP 层转发分组的流程</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分组转发算法 </p>
+<ul>
+<li>(1)  从数据报的首部提取目的主机的 IP 地址 D, 得出目的网络地址为 N。</li>
+<li>(2)  若网络 N 与此路由器直接相连，则把数据报直接交付目的主机 D；否则是间接交付，执行(3)。</li>
+<li>(3)  若路由表中有目的地址为 D 的特定主机路由，则把数据报传送给路由表中所指明的下一跳路由器；否则，执行(4)。</li>
+<li>(4)  若路由表中有到达网络 N 的路由，则把数据报传送给路由表指明的下一跳路由器；否则，执行(5)。</li>
+<li>(5) 若路由表中有一个默认路由，则把数据报传送给路由表中所指明的默认路由器；否则，执行(6)。</li>
+<li>(6)  报告转发分组出错。 </li>
+<li>概要: 示意图<h2 id="划分子网和构造超网"><a href="#划分子网和构造超网" class="headerlink" title="划分子网和构造超网"></a>划分子网和构造超网</h2><h3 id="划分子网"><a href="#划分子网" class="headerlink" title="划分子网"></a>划分子网</h3><h3 id="使用子网时分组转发"><a href="#使用子网时分组转发" class="headerlink" title="使用子网时分组转发"></a>使用子网时分组转发</h3><h3 id="无分类编址-CIDR（构造超网）"><a href="#无分类编址-CIDR（构造超网）" class="headerlink" title="无分类编址 CIDR（构造超网）"></a>无分类编址 CIDR（构造超网）</h3><h2 id="网际控制报文协议-ICMP"><a href="#网际控制报文协议-ICMP" class="headerlink" title="网际控制报文协议 ICMP"></a>网际控制报文协议 ICMP</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3></li>
+</ul>
+</li>
+<li><p>ICMP 是为了更有效地转发 IP 数据报和提高交付成功的机会。它封装在 IP 数据报中，但是不属于高层协议。</p>
+<h3 id="ICMP-报文的种类"><a href="#ICMP-报文的种类" class="headerlink" title="ICMP 报文的种类"></a>ICMP 报文的种类</h3></li>
+<li><p>ICMP 差错报告报文</p>
+<ul>
+<li>终点不可达 </li>
+<li>源点抑制(Source quench)  </li>
+<li>时间超过 </li>
+<li>参数问题 </li>
+<li>改变路由（重定向）(Redirect)  </li>
+</ul>
+</li>
+<li><p>ICMP 询问报文</p>
+<ul>
+<li>回送请求和回答报文</li>
+<li>时间戳请求和回答报文</li>
+</ul>
+</li>
+<li><p>ICMP 报文的前 4 个字节是统一的格式，共有三个字段：即类型、代码和检验和。接着的 4 个字节的内容与 ICMP 的类型有关。 </p>
+<h3 id="ICMP-的应用举例"><a href="#ICMP-的应用举例" class="headerlink" title="ICMP 的应用举例"></a>ICMP 的应用举例</h3></li>
+<li><p>Ping</p>
+<ul>
+<li>Ping 是 ICMP 的一个重要应用，主要用来测试两台主机之间的连通性。</li>
+</ul>
+</li>
+</ul>
+<p>Ping 的原理是通过向目的主机发送 ICMP Echo 请求报文，目的主机收到之后会发送 Echo 回答报文。Ping 会根据时间和成功响应的次数估算出数据包往返时间以及丢包率。</p>
+<ul>
+<li>Tracerouteping<ul>
+<li>Traceroute 是 ICMP 的另一个应用，用来跟踪一个分组从源点到终点的路径。</li>
+</ul>
+</li>
+</ul>
+<p>Traceroute 发送的 IP 数据报封装的是无法交付的 UDP 用户数据报，并由目的主机发送终点不可达差错报告报文。<br>        * 源主机向目的主机发送一连串的 IP 数据报。第一个数据报 P1 的生存时间 TTL 设置为 1，当 P1 到达路径上的第一个路由器 R1 时，R1 收下它并把 TTL 减 1，此时 TTL 等于 0，R1 就把 P1 丢弃，并向源主机发送一个 ICMP 时间超过差错报告报文；<br>                * 源主机接着发送第二个数据报 P2，并把 TTL 设置为 2。P2 先到达 R1，R1 收下后把 TTL 减 1 再转发给 R2，R2 收下后也把 TTL 减 1，由于此时 TTL 等于 0，R2 就丢弃 P2，并向源主机发送一个 ICMP 时间超过差错报文。<br>                * 不断执行这样的步骤，直到最后一个数据报刚刚到达目的主机，主机不转发数据报，也不把 TTL 值减 1。但是因为数据报封装的是无法交付的 UDP，因此目的主机要向源主机发送 ICMP 终点不可达差错报告报文。<br>                        * 之后源主机知道了到达目的主机所经过的路由器 IP 地址以及到达每个路由器的往返时间。</p>
+<h2 id="因特网的路由选择协议"><a href="#因特网的路由选择协议" class="headerlink" title="因特网的路由选择协议"></a>因特网的路由选择协议</h2><h3 id="有关路由选择协议的几个基本概念"><a href="#有关路由选择协议的几个基本概念" class="headerlink" title="有关路由选择协议的几个基本概念"></a>有关路由选择协议的几个基本概念</h3><ul>
+<li>静态路由选择策略——即非自适应路由选择，其特点是简单和开销较小，但不能及时适应网络状态的变化。 </li>
+<li>动态路由选择策略——即自适应路由选择，其特点是能较好地适应网络状态的变化，但实现起来较为复杂，开销也比较大。<h3 id="自治系统-AS-Autonomous-System"><a href="#自治系统-AS-Autonomous-System" class="headerlink" title="自治系统 AS(Autonomous System)"></a>自治系统 AS(Autonomous System)</h3></li>
+<li>自治系统 AS 的定义：在单一的技术管理下的一组路由器，而这些路由器使用一种 AS 内部的路由选择协议和共同的度量以确定分组在该 AS 内的路由，同时还使用一种 AS 之间的路由选择协议用以确定分组在 AS之间的路由。<h3 id="内部网关协议-IGP-Interior-Gateway-Protocol"><a href="#内部网关协议-IGP-Interior-Gateway-Protocol" class="headerlink" title="内部网关协议 IGP (Interior Gateway Protocol)"></a>内部网关协议 IGP (Interior Gateway Protocol)</h3></li>
+<li>即在一个自治系统内部使用的路由选择协议。<ul>
+<li>内部网关协议 RIP<ul>
+<li>RIP 是一种基于距离向量的路由选择协议。距离是指跳数，直接相连的路由器跳数为 1。跳数最多为 15，超过 15 表示不可达。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>RIP 按固定的时间间隔仅和相邻路由器交换自己的路由表，经过若干次交换之后，所有路由器最终会知道到达本自治系统中任何一个网络的最短距离和下一跳路由器地址。</p>
+<ul>
+<li>距离向量算法：<ul>
+<li>对地址为 X 的相邻路由器发来的 RIP 报文，先修改报文中的所有项目，把下一跳字段中的地址改为 X，并把所有的距离字段加 1；<ul>
+<li>对修改后的 RIP 报文中的每一个项目，进行以下步骤：</li>
+<li>若原来的路由表中没有目的网络 N，则把该项目添加到路由表中；</li>
+<li>否则：若下一跳路由器地址是 X，则把收到的项目替换原来路由表中的项目；否则：若收到的项目中的距离 d 小于路由表中的距离，则进行更新（例如原始路由表项为 Net2, 5, P，新表项为 Net2, 4, X，则更新）；否则什么也不做。</li>
+<li>若 3 分钟还没有收到相邻路由器的更新路由表，则把该相邻路由器标为不可达，即把距离置为 16</li>
+<li>RIP 协议实现简单，开销小。但是 RIP 能使用的最大距离为 15，限制了网络的规模。并且当网络出现故障时，要经过比较长的时间才能将此消息传送到所有路由器。</li>
+<li>内部网关协议 OSPF<pre><code>* 开放最短路径优先 OSPF，是为了克服 RIP 的缺点而开发出来的。</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>开放表示 OSPF 不受某一家厂商控制，而是公开发表的；最短路径优先表示使用了 Dijkstra 提出的最短路径算法 SPF。</p>
+<ul>
+<li>OSPF 具有以下特点：<ul>
+<li>向本自治系统中的所有路由器发送信息，这种方法是洪泛法。</li>
+<li>发送的信息就是与相邻路由器的链路状态，链路状态包括与哪些路由器相连以及链路的度量，度量用费用、距离、时延、带宽等来表示。</li>
+<li>只有当链路状态发生变化时，路由器才会发送信息。</li>
+<li>所有路由器都具有全网的拓扑结构图，并且是一致的。相比于 RIP，OSPF 的更新过程收敛的很快。</li>
+</ul>
+</li>
+</ul>
+<h3 id="外部网关协议-BGP-External-Gateway-Protocol"><a href="#外部网关协议-BGP-External-Gateway-Protocol" class="headerlink" title="外部网关协议 BGP (External Gateway Protocol)"></a>外部网关协议 BGP (External Gateway Protocol)</h3><ul>
+<li>若源站和目的站处在不同的自治系统中，当数据报传到一个自治系统的边界时，就需要使用一种协议将路由选择信息传递到另一个自治系统中。</li>
+<li>AS 之间的路由选择很困难，主要是由于：<ul>
+<li>互联网规模很大；</li>
+<li>各个 AS 内部使用不同的路由选择协议，无法准确定义路径的度量；</li>
+<li>AS 之间的路由选择必须考虑有关的策略，比如有些 AS 不愿意让其它 AS 经过。</li>
+</ul>
+</li>
+<li>BGP 只能寻找一条比较好的路由，而不是最佳路由。</li>
+</ul>
+<p>每个 AS 都必须配置 BGP 发言人，通过在两个相邻 BGP 发言人之间建立 TCP 连接来交换路由信息。<br>    * 示意图</p>
+<h3 id="路由器的构成"><a href="#路由器的构成" class="headerlink" title="路由器的构成"></a>路由器的构成</h3><ul>
+<li>路由器是一种具有多个输入端口和多个输出端口的专用计算机，其任务是转发分组。也就是说，将路由器某个输入端口收到的分组，按照分组要去的目的地（即目的网络），把该分组从路由器的某个合适的输出端口转发给下一跳路由器。</li>
+<li>路由器从功能上可以划分为<ul>
+<li>路由选择</li>
+<li>分组转发</li>
+</ul>
+</li>
+<li>分组转发结构由三个部分组成<ul>
+<li>交换结构</li>
+<li>一组输入端口</li>
+<li>一组输出端口</li>
+<li>概要: 示意图<h2 id="IP-多播"><a href="#IP-多播" class="headerlink" title="IP 多播"></a>IP 多播</h2><h3 id="IP-多播的基本概念"><a href="#IP-多播的基本概念" class="headerlink" title="IP 多播的基本概念"></a>IP 多播的基本概念</h3></li>
+</ul>
+</li>
+<li>多播可明显地减少网络中资源的消耗<h3 id="在局域网上进行硬件多播"><a href="#在局域网上进行硬件多播" class="headerlink" title="在局域网上进行硬件多播"></a>在局域网上进行硬件多播</h3></li>
+<li><h3 id="因特网组管理协议-IGMP-和多播路由选择协议"><a href="#因特网组管理协议-IGMP-和多播路由选择协议" class="headerlink" title="因特网组管理协议 IGMP 和多播路由选择协议"></a>因特网组管理协议 IGMP 和多播路由选择协议</h3></li>
+<li>IGMP 使多播路由器知道多播组成员信息 </li>
+<li>多播转发必须动态地适应多播组成员的变化（这时网络拓扑并未发生变化）。请注意，单播路由选择通常是在网络拓扑发生变化时才需要更新路由。<h2 id="虚拟专用网-VPN-和网络地址转换-NAT"><a href="#虚拟专用网-VPN-和网络地址转换-NAT" class="headerlink" title="虚拟专用网 VPN 和网络地址转换 NAT"></a>虚拟专用网 VPN 和网络地址转换 NAT</h2><h3 id="虚拟专用网-VPN"><a href="#虚拟专用网-VPN" class="headerlink" title="虚拟专用网 VPN"></a>虚拟专用网 VPN</h3></li>
+<li>由于 IP 地址的紧缺，一个机构能申请到的 IP 地址数往往远小于本机构所拥有的主机数。并且一个机构并不需要把所有的主机接入到外部的互联网中，机构内的计算机可以使用仅在本机构有效的 IP 地址（专用地址）。<ul>
+<li>有三个专用地址块：<ul>
+<li>10.0.0.0 ~ 10.255.255.255</li>
+<li>172.16.0.0 ~ 172.31.255.255</li>
+<li>192.168.0.0 ~ 192.168.255.255</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>VPN 使用公用的互联网作为本机构各专用网之间的通信载体。专用指机构内的主机只与本机构内的其它主机通信；虚拟指好像是，而实际上并不是，它有经过公用的互联网。</li>
+<li>下图中，场所 A 和 B 的通信经过互联网，如果场所 A 的主机 X 要和另一个场所 B 的主机 Y 通信，IP 数据报的源地址是 10.1.0.1，目的地址是 10.2.0.3。数据报先发送到与互联网相连的路由器 R1，R1 对内部数据进行加密，然后重新加上数据报的首部，源地址是路由器 R1 的全球地址 125.1.2.3，目的地址是路由器 R2 的全球地址 194.4.5.6。路由器 R2 收到数据报后将数据部分进行解密，恢复原来的数据报，此时目的地址为 10.2.0.3，就交付给 Y。<h3 id="网络地址转换-NAT"><a href="#网络地址转换-NAT" class="headerlink" title="网络地址转换 NAT"></a>网络地址转换 NAT</h3></li>
+<li>专用网内部的主机使用本地 IP 地址又想和互联网上的主机通信时，可以使用 NAT 来将本地 IP 转换为全球 IP。</li>
+<li>在以前，NAT 将本地 IP 和全球 IP 一一对应，这种方式下拥有 n 个全球 IP 地址的专用网内最多只可以同时有 n 台主机接入互联网。为了更有效地利用全球 IP 地址，现在常用的 NAT 转换表把传输层的端口号也用上了，使得多个专用网内部的主机共用一个全球 IP 地址。使用端口号的 NAT 也叫做网络地址与端口转换 NAPT。</li>
+</ul>
+<h2 id="因为网络层是整个互联网的核心，因此应当让网络层尽可能简单。网络层向上只提供简单灵活的、无连接的、尽最大努力交互的数据报服务。"><a href="#因为网络层是整个互联网的核心，因此应当让网络层尽可能简单。网络层向上只提供简单灵活的、无连接的、尽最大努力交互的数据报服务。" class="headerlink" title="因为网络层是整个互联网的核心，因此应当让网络层尽可能简单。网络层向上只提供简单灵活的、无连接的、尽最大努力交互的数据报服务。"></a>因为网络层是整个互联网的核心，因此应当让网络层尽可能简单。网络层向上只提供简单灵活的、无连接的、尽最大努力交互的数据报服务。</h2>]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
 </search>
